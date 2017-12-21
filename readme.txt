@@ -1,9 +1,9 @@
 === Product Customer List for WooCommerce ===
 Contributors: kokomoweb
-Tags: woocommerce, customer list, who bought, admin order list, product-specific, export customers to csv, email customers, customer list, customer, list, print
+Tags: woocommerce, customer list, who bought, admin order list, product-specific, export customers to csv, email customers, customer list, customer, list, print, front-end customers, shortcode
 Requires at least: 4.0
-Tested up to: 4.8.2
-Stable tag: 2.6.0
+Tested up to: 4.9.1
+Stable tag: 2.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,7 +20,7 @@ Great for sending out e-mails to customers for product recalls or for courses.
 * Support for variable products
 * Options page to select which info columns to display
 * Displays customer name, email, phone number, address, order number, order date, shipping method, order total and quantity for each product
-* Shortcode to display orders in the front-end (beta)
+* Shortcode to display orders in the front-end. You can select which information to display using attributes
 * Button to e-mail all customers for a specific product using your favorite e-mail client (b.c.c.)
 * Email selected customers
 * Export the customer list to CSV (great for importing into Mailchimp!)
@@ -63,8 +63,51 @@ Feel free to [contact me](http://www.kokomoweb.com/contact/) for any feature req
 
 = How do I use the shortcode? =
 
-To display the list in the front end, simply use the following shortcode: [customer_list product=PRODUCT_ID quantity=TRUE/FALSE]
-Replace PRODUCT_ID with the ID of the product for which you want to display the customers. Use TRUE or FALSE to display the quantity. If you do not use any attributes, it will display the customers of the current product (on a product page), and it will not display the quantity. 
+**WARNING: The shortcode can display very private information about your customers (if you decide to). Please use with caution.**
+
+To display the list in the front end, simply use the following shortcode: [customer_list] along with the following attributes and their "true" or "false" value:
+
+* **product** : The ID of the product for which you wish to display the customer list. If you do not put an ID number, it will use the ID of the current product (if used on a product page)
+* **order_status** : The order status for which the shortcode will display your customers. If you have more than one, seperate them with commas. Options are: wc-completed, wc-processing, wc-on-hold, wc-pending, wc-cancelled, wc-refunded, wc-failed. Default is "wc-completed".
+* **show_titles** : Display the titles of each column in the head of the table. Titles cannot be modified at this time.
+* **order_number** : The ID of the order.
+* **order_date** : The date of the order.
+* **billing_first_name** : Billing first name.
+* **billing_last_name** : Billing last name.
+* **billing_company** : Billing company.
+* **billing_email** : Billing e-mail.
+* **billing_phone** : Billing phone.
+* **billing_address_1** : Billing address 1.
+* **billing_address_2** : Billing address 2.
+* **billing_city** : Billing city.
+* **billing_state** : Billing state.
+* **billing_postalcode** : Billing postal / Zip code.
+* **billing_country** : Billing country.
+* **shipping_first_name** : Shipping first name.
+* **shipping_last_name** : Shipping last name.
+* **shipping_company** : Shipping company.
+* **shipping_address_1** : Shipping address 1.
+* **shipping_address_2** : Shipping address 2.
+* **shipping_city** : Shipping city.
+* **shipping_state** : Shipping state.
+* **shipping_postalcode** : Shipping postal / Zip code.
+* **shipping_country** : Shipping country.
+* **customer_message** : Message from the customer.
+* **customer_id** : The ID of the customer (if registered).
+* **customer_username** : The user name of the Customer (if registered).
+* **order_status** : The order status.
+* **order_payment** : The order payment method.
+* **order_shipping** : The order shipping method.
+* **order_coupon** : The coupon(s) used at checkout.
+* **order_total** : The order total.
+* **order_qty** : The quantity of products purchased.
+* **order_qty_total** : The total of products purchased for all customers. This field is added at the bottom of the table.
+
+If you do not use any attributes for the product ID, it will display the customers of the current product (on a product page). 
+
+Here is an example containing every attribute of the shortcode, with the default values. Please note that it is not needed to include each attribute, you can simply use the attributes that you wish to modify (replace 999 with your product id):
+
+*[customer_list product="999" show_titles="true" order_status="wc-completed" order_number="false" order_date="false" billing_first_name="true" billing_last_name="true" billing_company="false" billing_email="false" billing_phone="false" billing_address_1="false" billing_address_2="false" billing_city="false" billing_state="false" billing_postalcode="false" billing_country="false" shipping_first_name="false" shipping_last_name="false" shipping_company="false" shipping_address_1="false" shipping_address_2="false" shipping_city="false" shipping_state="false" shipping_postalcode="false" shipping_country="false" customer_message="false" customer_id="false" customer_username="false" order_status="false" order_payment="false" order_shipping="false" order_coupon="false" order_total="false" order_qty="false"]*
 
 = Why doesn't the customer list appear when I edit a product? =
 
@@ -76,7 +119,7 @@ You can access the settings page in WooCommerce / Settings / Products / Produ
 
 = How can I reorder the columns? = 
 
-You can reorder the columns by dragging them and dropping them in the order you want. The browser will remember your selection.
+You can reorder the columns by dragging them and dropping them in the order you want. The browser will remember your selection. You can press the "Reset column order" button at any time to reset the order to it's initial state.
 
 = What are the available hooks? = 
 
@@ -88,6 +131,9 @@ There is currently only one hook, that enables you to add content after the “e
 2. The settings page.
 
 == Changelog ==
+
+= 2.6.1 =
+* Added shortcode attributes for all columns
 
 = 2.6.0 =
 * Fixed compatibility bug in PHP 7.1 (Thanks to mmagnani)
