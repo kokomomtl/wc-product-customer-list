@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WC_Product_Customer_List
- * @version 2.6.1
+ * @version 2.6.2
  */
 
 // Create Shortcode customer_list
@@ -401,8 +401,6 @@ function wpcl_shortcode($atts) {
 
 	<?php } else {
 		_e('This product currently has no customers', 'wc-product-customer-list');
-	} ?>
-	</div>
-<?php
+	} 
 }
 add_shortcode( 'customer_list', 'wpcl_shortcode' );

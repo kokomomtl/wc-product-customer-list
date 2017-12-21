@@ -3,7 +3,7 @@ Contributors: kokomoweb
 Tags: woocommerce, customer list, who bought, admin order list, product-specific, export customers to csv, email customers, customer list, customer, list, print, front-end customers, shortcode
 Requires at least: 4.0
 Tested up to: 4.9.1
-Stable tag: 2.6.1
+Stable tag: 2.6.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -131,6 +131,9 @@ There is currently only one hook, that enables you to add content after the “e
 2. The settings page.
 
 == Changelog ==
+
+= 2.6.2 =
+* Fixed rogue '</div>' at the end of the shortcode (thanks to aerobass)
 
 = 2.6.1 =
 * Added shortcode attributes for all columns
