@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WC_Product_Customer_List
- * @version 2.6.2
+ * @version 2.6.3
  */
 
 // Create Shortcode customer_list
@@ -9,6 +9,7 @@
 // Use the shortcode: [customer_list product="1111" hide_titles="false" order_status="wc-completed" order_number="false" order_date="false" billing_first_name="true" billing_last_name="true" billing_company="false" billing_email="false" billing_phone="false" billing_address_1="false" billing_address_2="false" billing_city="false" billing_state="false" billing_postalcode="false" billing_country="false" shipping_first_name="false" shipping_last_name="false" shipping_company="false" shipping_address_1="false" shipping_address_2="false" shipping_city="false" shipping_state="false" shipping_postalcode="false" shipping_country="false" customer_message="false" customer_id="false" customer_username="false" order_status="false" order_payment="false" order_shipping="false" order_coupon="false" order_total="false" order_qty="false"]
 
 function wpcl_shortcode($atts) {
+	ob_start();
 
 	// Attributes
 	$atts = shortcode_atts(
@@ -93,7 +94,6 @@ function wpcl_shortcode($atts) {
 	global $sitepress, $post, $wpdb;
 
 	// Check for translated products if WPML is activated
-
 	if(isset($sitepress)) {
 		$trid = $sitepress->get_element_trid($post_id, 'post_product');
 		$translations = $sitepress->get_element_translations($trid, 'product');
@@ -126,7 +126,6 @@ function wpcl_shortcode($atts) {
 	));
 
 	// Get selected columns from the options page
-
 	$product = WC()->product_factory->get_product( $post_id );
 	$columns = array();
 	if($order_number == 'true' ) { $columns[] = __('Order', 'wc-product-customer-list'); }
@@ -183,7 +182,7 @@ function wpcl_shortcode($atts) {
 					$order = wc_get_order( $sale->order_id );
 					$formatted_total = $order->get_formatted_order_total();
 
-							// Get quantity
+					// Get quantity
 					$refunded_qty = 0;
 					$items = $order->get_items();
 					foreach ($items as $item_id => $item) {
@@ -194,10 +193,10 @@ function wpcl_shortcode($atts) {
 					$quantity = wc_get_order_item_meta( $sale->order_item_id, '_qty', true );
 					$quantity += $refunded_qty;
 
-							// Check for partially refunded orders
+					// Check for partially refunded orders
 					if($quantity == 0 && get_option( 'wpcl_order_partial_refunds', 'no' ) == 'yes') {
 
-							// Order has been partially refunded
+					// Order has been partially refunded
 					} else {
 						?>
 						<tr>
@@ -401,6 +400,7 @@ function wpcl_shortcode($atts) {
 
 	<?php } else {
 		_e('This product currently has no customers', 'wc-product-customer-list');
-	} 
+	}
+	return ob_get_clean();
 }
 add_shortcode( 'customer_list', 'wpcl_shortcode' );
