@@ -1,12 +1,16 @@
 <?php
 /**
  * @package WC_Product_Customer_List
- * @version 2.6.3
+ * @version 2.6.4
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Exit if accessed directly
+}
 
 // Create Shortcode customer_list
 
-// Use the shortcode: [customer_list product="1111" hide_titles="false" order_status="wc-completed" order_number="false" order_date="false" billing_first_name="true" billing_last_name="true" billing_company="false" billing_email="false" billing_phone="false" billing_address_1="false" billing_address_2="false" billing_city="false" billing_state="false" billing_postalcode="false" billing_country="false" shipping_first_name="false" shipping_last_name="false" shipping_company="false" shipping_address_1="false" shipping_address_2="false" shipping_city="false" shipping_state="false" shipping_postalcode="false" shipping_country="false" customer_message="false" customer_id="false" customer_username="false" order_status="false" order_payment="false" order_shipping="false" order_coupon="false" order_total="false" order_qty="false"]
+// Use the shortcode: [customer_list product="1111" hide_titles="false" order_status="wc-completed" order_number="false" order_date="false" billing_first_name="true" billing_last_name="true" billing_company="false" billing_email="false" billing_phone="false" billing_address_1="false" billing_address_2="false" billing_city="false" billing_state="false" billing_postalcode="false" billing_country="false" shipping_first_name="false" shipping_last_name="false" shipping_company="false" shipping_address_1="false" shipping_address_2="false" shipping_city="false" shipping_state="false" shipping_postalcode="false" shipping_country="false" customer_message="false" customer_id="false" customer_username="false" customer_username_link="true" order_status_column="false" order_payment="false" order_shipping="false" order_coupon="false" order_total="false" order_qty="false" order_qty_total="false" order_qty_total_column="false" limit="9999"]
 
 function wpcl_shortcode($atts) {
 	ob_start();
@@ -42,13 +46,16 @@ function wpcl_shortcode($atts) {
 			'customer_message' => 'false',
 			'customer_id' => 'false',
 			'customer_username' => 'false',
-			'order_status' => 'false',
+			'customer_username_link' => 'true',
+			'order_status_column' => 'false',
 			'order_payment' => 'false',
 			'order_shipping' => 'false',
 			'order_coupon' => 'false',
 			'order_total' => 'false',
 			'order_qty' => 'false',
 			'order_qty_total' => 'false',
+			'order_qty_total_column' => 'false',
+			'limit' => 9999,
 		),
 		$atts,
 		'customer_list'
@@ -56,7 +63,7 @@ function wpcl_shortcode($atts) {
 
 	// Attributes in var
 	$post_id = $atts['product'];
-	$order_status = $atts['order_number'];
+	$order_status = $atts['order_status'];
 	$show_titles = $atts['show_titles'];
 	$order_number = $atts['order_number'];
 	$order_date = $atts['order_date'];
@@ -83,13 +90,16 @@ function wpcl_shortcode($atts) {
 	$customer_message = $atts['customer_message'];
 	$customer_id = $atts['customer_id'];
 	$customer_username = $atts['customer_username'];
-	$order_status = $atts['order_status'];
+	$customer_username_link = $atts['customer_username_link'];
+	$order_status_column = $atts['order_status_column'];
 	$order_payment = $atts['order_payment'];
 	$order_shipping = $atts['order_shipping'];
 	$order_coupon = $atts['order_coupon'];
 	$order_total = $atts['order_total'];
 	$order_qty = $atts['order_qty'];
 	$order_qty_total = $atts['order_qty_total'];
+	$order_qty_total_column = $atts['order_qty_total_column'];
+	$limit = $atts['limit'];
 
 	global $sitepress, $post, $wpdb;
 
@@ -121,7 +131,8 @@ function wpcl_shortcode($atts) {
 		AND oim.meta_value IN ( $post_string )
 		AND o.post_status IN ( $order_statuses_string )
 		AND o.post_type NOT IN ('shop_order_refund')
-		ORDER BY o.ID DESC",
+		ORDER BY o.ID DESC
+		LIMIT $limit",
 		'_product_id'
 	));
 
@@ -153,12 +164,13 @@ function wpcl_shortcode($atts) {
 	if($customer_message == 'true' ) { $columns[] = __('Customer Message', 'wc-product-customer-list'); }
 	if($customer_id == 'true' ) { $columns[] = __('Customer ID', 'wc-product-customer-list'); }
 	if($customer_username == 'true' ) { $columns[] = __('Customer username', 'wc-product-customer-list'); }
-	if($order_status == 'true' ) { $columns[] = __('Order Status', 'wc-product-customer-list'); }
+	if($order_status_column == 'true' ) { $columns[] = __('Order Status', 'wc-product-customer-list'); }
 	if($order_payment == 'true' ) { $columns[] = __('Payment method', 'wc-product-customer-list'); }
 	if($order_shipping == 'true' ) { $columns[] = __('Shipping method', 'wc-product-customer-list'); }
 	if($order_coupon == 'true' ) { $columns[] = __('Coupons used', 'wc-product-customer-list'); }
 	if($product->get_type() == 'variable' ) { $columns[] = __('Variation', 'wc-product-customer-list'); }
 	if($order_total == 'true' ) { $columns[] = __('Order total', 'wc-product-customer-list'); }
+	if($order_qty_column == 'true' ) { $columns[] = __('Qty', 'wc-product-customer-list'); }
 	if($order_qty == 'true' ) { $columns[] = __('Qty', 'wc-product-customer-list'); }
 
 	if($item_sales) {
@@ -330,12 +342,16 @@ function wpcl_shortcode($atts) {
 									$customerid = $order->get_customer_id();
 									if($customerid) {
 										$user_info = get_userdata($customerid);
-										echo '<a href="' . get_admin_url() . 'user-edit.php?user_id=' . $order->get_customer_id() . '" target="_blank">' . $user_info->user_login . '</a>';
+										if($customer_username_link == 'true') {
+											echo '<a href="' . get_admin_url() . 'user-edit.php?user_id=' . $order->get_customer_id() . '" target="_blank">' . $user_info->user_login . '</a>';
+										} else {
+											echo $user_info->user_login;
+										}
 									}
 								?>
 							</td>
 							<?php } ?>
-							<?php if($order_status == 'true') { ?>
+							<?php if($order_status_column == 'true') { ?>
 							<td>
 								<?php
 									$status = wc_get_order_status_name($order->get_status());
@@ -383,6 +399,11 @@ function wpcl_shortcode($atts) {
 							?>
 							<td>
 								<?php echo $quantity;  ?>
+							</td>
+							<?php } ?>
+							<?php if($order_qty_total_column == 'true') { ?>
+							<td>
+								<?php echo get_post_meta($post_id,'total_sales', true);  ?>
 							</td>
 							<?php } ?>
 						</tr>
