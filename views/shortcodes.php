@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WC_Product_Customer_List
- * @version 2.6.4
+ * @version 2.6.5
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -170,7 +170,7 @@ function wpcl_shortcode($atts) {
 	if($order_coupon == 'true' ) { $columns[] = __('Coupons used', 'wc-product-customer-list'); }
 	if($product->get_type() == 'variable' ) { $columns[] = __('Variation', 'wc-product-customer-list'); }
 	if($order_total == 'true' ) { $columns[] = __('Order total', 'wc-product-customer-list'); }
-	if($order_qty_column == 'true' ) { $columns[] = __('Qty', 'wc-product-customer-list'); }
+	if($order_qty_total_column == 'true' ) { $columns[] = __('Total qty', 'wc-product-customer-list'); }
 	if($order_qty == 'true' ) { $columns[] = __('Qty', 'wc-product-customer-list'); }
 
 	if($item_sales) {

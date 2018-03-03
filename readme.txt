@@ -3,7 +3,7 @@ Contributors: kokomoweb
 Tags: woocommerce, customer list, who bought, admin order list, product-specific, export customers to csv, email customers, customer list, customer, list, print, front-end customers, shortcode
 Requires at least: 4.0
 Tested up to: 4.9.4
-Stable tag: 2.6.4
+Stable tag: 2.6.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -109,7 +109,7 @@ If you do not use any attributes for the product ID, it will display the custome
 
 Here is an example containing every attribute of the shortcode, with the default values. Please note that it is not needed to include each attribute, you can simply use the attributes that you wish to modify (replace 999 with your product id):
 
-*`[customer_list product="999" show_titles="true" order_status="wc-completed" order_number="false" order_date="false" billing_first_name="true" billing_last_name="true" billing_company="false" billing_email="false" billing_phone="false" billing_address_1="false" billing_address_2="false" billing_city="false" billing_state="false" billing_postalcode="false" billing_country="false" shipping_first_name="false" shipping_last_name="false" shipping_company="false" shipping_address_1="false" shipping_address_2="false" shipping_city="false" shipping_state="false" shipping_postalcode="false" shipping_country="false" customer_message="false" customer_id="false" customer_username="false" order_status="false" order_payment="false" order_shipping="false" order_coupon="false" order_total="false" order_qty="false" order_qty_total="false" order_qty_total_column="false" limit="9999"]`*
+`[customer_list product="999" show_titles="true" order_status="wc-completed" order_number="false" order_date="false" billing_first_name="true" billing_last_name="true" billing_company="false" billing_email="false" billing_phone="false" billing_address_1="false" billing_address_2="false" billing_city="false" billing_state="false" billing_postalcode="false" billing_country="false" shipping_first_name="false" shipping_last_name="false" shipping_company="false" shipping_address_1="false" shipping_address_2="false" shipping_city="false" shipping_state="false" shipping_postalcode="false" shipping_country="false" customer_message="false" customer_id="false" customer_username="false" order_status="false" order_payment="false" order_shipping="false" order_coupon="false" order_total="false" order_qty="false" order_qty_total="false" order_qty_total_column="false" limit="9999"]`
 
 = Why doesn't the customer list appear when I edit a product? =
 
@@ -133,6 +133,9 @@ There is currently only one hook, that enables you to add content after the “e
 2. The settings page.
 
 == Changelog ==
+
+= 2.6.5 =
+* Fixed shameful PHP notice.
 
 = 2.6.4 =
 * Fixed duplicate order_status option in shortcode (please use order_status_column to display the order status column.
