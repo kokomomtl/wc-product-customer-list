@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WC_Product_Customer_List
- * @version 2.6.0
+ * @version 2.6.6
  */
 
 // Load metabox at bottom of product admin screen
@@ -102,9 +102,10 @@ if( ! function_exists('wpcl_post_class_meta_box') ) {
 		if(get_option( 'wpcl_order_payment', 'no' ) == 'yes') { $columns[] = __('Payment method', 'wc-product-customer-list'); }
 		if(get_option( 'wpcl_order_shipping', 'no' ) == 'yes') { $columns[] = __('Shipping method', 'wc-product-customer-list'); }
 		if(get_option( 'wpcl_order_coupon', 'no' ) == 'yes') { $columns[] = __('Coupons used', 'wc-product-customer-list'); }
-		if( $product->get_type() == 'variable' ) { $columns[] = __('Variation', 'wc-product-customer-list'); }
+		if( ($product->get_type() == 'variable' ) && ( get_option( 'wpcl_variations', 'yes' ) == 'yes' ) ) { $columns[] = __('Variation', 'wc-product-customer-list'); }
 		if(get_option( 'wpcl_order_total', 'no' ) == 'yes') { $columns[] = __('Order total', 'wc-product-customer-list'); }
 		if(get_option( 'wpcl_order_qty', 'yes' ) == 'yes') { $columns[] = __('Qty', 'wc-product-customer-list'); }
+
 		?>
 
 		<div class="wpcl-init"></div>
@@ -121,6 +122,10 @@ if( ! function_exists('wpcl_post_class_meta_box') ) {
 								<strong><?php echo $column; ?></strong>
 							</th>
 							<?php } ?>
+							<?php
+								// Add wpcl_admin_add_column_head action
+								do_action('wpcl_admin_add_column_head', $columns);
+							?>
 						</tr>
 					</thead>
 					<tbody>
@@ -377,7 +382,9 @@ if( ! function_exists('wpcl_post_class_meta_box') ) {
 										<p>
 											<?php 
 												foreach($item->get_meta_data() as $itemvariation) {
-													echo '<strong>' . wc_attribute_label($itemvariation->key) . '</strong>: &nbsp;' . wc_attribute_label($itemvariation->value) . '<br />';
+													if(!is_array(($itemvariation->value))){
+														echo '<strong>' . wc_attribute_label($itemvariation->key) . '</strong>: &nbsp;' . wc_attribute_label($itemvariation->value) . '<br />';
+													}
 												}
 											?>
 										</p>
@@ -399,6 +406,10 @@ if( ! function_exists('wpcl_post_class_meta_box') ) {
 										</p>
 									</td>
 									<?php } ?>
+									<?php 
+										// Add wpcl_admin_add_row
+										do_action('wpcl_admin_add_row', $order, $product, $sale);
+									?>
 								</tr>
 								<?php if ( $order->get_billing_email() ) {
 									$email_list[] = $order->get_billing_email();

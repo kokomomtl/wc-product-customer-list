@@ -2,8 +2,8 @@
 Contributors: kokomoweb
 Tags: woocommerce, customer list, who bought, admin order list, product-specific, export customers to csv, email customers, customer list, customer, list, print, front-end customers, shortcode
 Requires at least: 4.0
-Tested up to: 4.9.4
-Stable tag: 2.6.5
+Tested up to: 4.9.5
+Stable tag: 2.6.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,11 +39,13 @@ Great for sending out e-mails to customers for product recalls or for courses.
 * Multisite compatible
 * Support for custom statuses
 
-= Coming soon: =
+= Pro version: =
 
-* Form to e-mail all customers using WooCommerce e-mail formats and templating
+* Support for Custom Fields
+* Support for WooTours
+* Datatables functionalities for the shortcode (export PDF, export CSV, print, email customers, search, paging, etc...).
 
-Feel free to [contact me](http://www.kokomoweb.com/contact/) for any feature requests.
+I unfortunately do not have a license system up and running yet. If you are in a rush to purchase the pro version of the plugin, please [contact me](http://www.kokomoweb.com/contact/).
 
 = Contributors: =
 * Support for variable products: [Alexandre Simard](https://profiles.wordpress.org/brocheafoin/)
@@ -99,17 +101,34 @@ To display the list in the front end, simply use the following shortcode: [custo
 * **order_payment** : The order payment method.
 * **order_shipping** : The order shipping method.
 * **order_coupon** : The coupon(s) used at checkout.
+* **order_variations** : The variations column. Default: true.
 * **order_total** : The order total.
 * **order_qty** : The quantity of products purchased.
 * **order_qty_total** : The total of products purchased for all customers. This field is added at the bottom of the table.
 * **order_qty_total_column** : The total of products purchased for all customers. This field is added as a column.
 * **limit** : The amount of orders you want to display.
 
+**Pro version**
+
+* **custom_fields** : A comma separated list of your custom field keys. You can copy the keys that are available in the list in the admin settings.
+* **sortable** : Activates datatables script and enables sorting by column. Default: false.
+* **export_pdf** : Adds button to export the list as PDF. Default: false.
+* **export_csv** : Adds button to export the list as CSV. Default: false.
+* **email_customers** : Adds button to e-mail all customers with your e-mail client (b.c.c.). Default: false.
+* **copy** : Adds button to copy table data to clipboard. Default: false.
+* **print** : Adds button to print the table. Default: false.
+* **search** : Adds option to search the list. Default: false.
+* **paging** : Adds paging to list. Default: false.
+* **info** : Displays additional information such as posts per page. Default: false.
+* **scrollx** : Enables horizontal scrolling. Default: false.
+* **pdf_pagesize** : Sets the paper format for the PDF export. Options are LETTER|LEGAL|A3|A4|A5. Default: LETTER.
+* **pdf_orientation** : Sets the paper orientation for the PDF export. Options are portrait|landscape. Default: portrait.
+
 If you do not use any attributes for the product ID, it will display the customers of the current product (on a product page). 
 
 Here is an example containing every attribute of the shortcode, with the default values. Please note that it is not needed to include each attribute, you can simply use the attributes that you wish to modify (replace 999 with your product id):
 
-`[customer_list product="999" show_titles="true" order_status="wc-completed" order_number="false" order_date="false" billing_first_name="true" billing_last_name="true" billing_company="false" billing_email="false" billing_phone="false" billing_address_1="false" billing_address_2="false" billing_city="false" billing_state="false" billing_postalcode="false" billing_country="false" shipping_first_name="false" shipping_last_name="false" shipping_company="false" shipping_address_1="false" shipping_address_2="false" shipping_city="false" shipping_state="false" shipping_postalcode="false" shipping_country="false" customer_message="false" customer_id="false" customer_username="false" order_status="false" order_payment="false" order_shipping="false" order_coupon="false" order_total="false" order_qty="false" order_qty_total="false" order_qty_total_column="false" limit="9999"]`
+`[customer_list product="999" show_titles="true" order_status="wc-completed" order_number="false" order_date="false" billing_first_name="true" billing_last_name="true" billing_company="false" billing_email="false" billing_phone="false" billing_address_1="false" billing_address_2="false" billing_city="false" billing_state="false" billing_postalcode="false" billing_country="false" shipping_first_name="false" shipping_last_name="false" shipping_company="false" shipping_address_1="false" shipping_address_2="false" shipping_city="false" shipping_state="false" shipping_postalcode="false" shipping_country="false" customer_message="false" customer_id="false" customer_username="false" order_status="false" order_payment="false" order_shipping="false" order_coupon="false" order_variations="true" order_total="false" order_qty="false" order_qty_total="false" order_qty_total_column="false" limit="9999"]`
 
 = Why doesn't the customer list appear when I edit a product? =
 
@@ -123,9 +142,9 @@ You can access the settings page in WooCommerce / Settings / Products / Produ
 
 You can reorder the columns by dragging them and dropping them in the order you want. The browser will remember your selection. You can press the "Reset column order" button at any time to reset the order to it's initial state.
 
-= What are the available hooks? = 
+= Available hooks and filters = 
 
-There is currently only one hook, that enables you to add content after the “email all customers” button. To use it: add_action( 'wpcl_after_email_button' , ‘your_function_here’, 10 , 1 );
+Many hooks and filters. Documentation coming soon.
 
 == Screenshots ==
 
@@ -133,6 +152,14 @@ There is currently only one hook, that enables you to add content after the “e
 2. The settings page.
 
 == Changelog ==
+
+= 2.6.6 =
+* Added support for Pro version
+* Added multiple hooks and filters (documentation to come)
+* Added style for shortcode
+* Added variations settings for admin
+* Added variations settings for shortcode
+* Updated shortcode documentation
 
 = 2.6.5 =
 * Fixed shameful PHP notice.

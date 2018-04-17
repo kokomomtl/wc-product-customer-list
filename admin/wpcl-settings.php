@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WC_Product_Customer_List
- * @version 2.5.9
+ * @version 2.6.6
  */
 
 function wpcl_add_section( $sections ) {
@@ -21,7 +21,7 @@ function wpcl_all_settings( $settings, $current_section ) {
 	}
 	if ( $current_section == 'wpcl' ) {
 		$settings_wpcl = array();
-		$settings_wpcl[] = array( 'name' => __( 'Product Customer List for WooCommerce', 'wc-product-customer-list' ), 'type' => 'title', 'desc' => __( 'The following options are used to configure Product Customer List for WooCommerce', 'wc-product-customer-list' ), 'id' => 'wcslider' );
+		$settings_wpcl[] = array( 'name' => __( 'Product Customer List for WooCommerce', 'wc-product-customer-list' ), 'type' => 'title', 'desc' => __( 'The following options are used to configure Product Customer List for WooCommerce', 'wc-product-customer-list' ), 'id' => 'wpcl-settings' );
 		$settings_wpcl[] = array(
 			'name'    => __( 'Order status', 'woocommerce' ),
 			'desc'    => __( 'Select one or multiple order statuses for which you will display the customers.', 'wc-product-customer-list' ),
@@ -103,6 +103,14 @@ function wpcl_all_settings( $settings, $current_section ) {
 			'type'		=> 'checkbox',
 			'css' 		=> 'min-width:300px;',
 			'desc'		=> __( 'Enable coupons used column', 'wc-product-customer-list' ),
+		);
+		$settings_wpcl[] = array(
+			'name'		=> __( 'Variations column', 'wc-product-customer-list' ),
+			'id'		=> 'wpcl_variations',
+			'default'	=> 'yes',
+			'type'		=> 'checkbox',
+			'css' 		=> 'min-width:300px;',
+			'desc'		=> __( 'Enable variations column', 'wc-product-customer-list' ),
 		);
 		$settings_wpcl[] = array(
 			'name'		=> __( 'Customer message column', 'wc-product-customer-list' ),
@@ -316,7 +324,9 @@ function wpcl_all_settings( $settings, $current_section ) {
 			'desc_tip' =>  false,
 		);
 
-		$settings_wpcl[] = array( 'type' => 'sectionend', 'id' => 'wpcl' );
+		$settings_wpcl[] = array( 'type' => 'sectionend', 'id' => 'wpcl-settings' );
+
+		$settings_wpcl = apply_filters( 'wpcl_settings_filter', $settings_wpcl );
 		
 		return $settings_wpcl;
 

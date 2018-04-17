@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WC_Product_Customer_List
- * @version 2.6.5
+ * @version 2.6.6
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -10,14 +10,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Create Shortcode customer_list
 
-// Use the shortcode: [customer_list product="1111" hide_titles="false" order_status="wc-completed" order_number="false" order_date="false" billing_first_name="true" billing_last_name="true" billing_company="false" billing_email="false" billing_phone="false" billing_address_1="false" billing_address_2="false" billing_city="false" billing_state="false" billing_postalcode="false" billing_country="false" shipping_first_name="false" shipping_last_name="false" shipping_company="false" shipping_address_1="false" shipping_address_2="false" shipping_city="false" shipping_state="false" shipping_postalcode="false" shipping_country="false" customer_message="false" customer_id="false" customer_username="false" customer_username_link="true" order_status_column="false" order_payment="false" order_shipping="false" order_coupon="false" order_total="false" order_qty="false" order_qty_total="false" order_qty_total_column="false" limit="9999"]
+// Use the shortcode: [customer_list product="1111" hide_titles="false" order_status="wc-completed" order_number="false" order_date="false" billing_first_name="true" billing_last_name="true" billing_company="false" billing_email="false" billing_phone="false" billing_address_1="false" billing_address_2="false" billing_city="false" billing_state="false" billing_postalcode="false" billing_country="false" shipping_first_name="false" shipping_last_name="false" shipping_company="false" shipping_address_1="false" shipping_address_2="false" shipping_city="false" shipping_state="false" shipping_postalcode="false" shipping_country="false" customer_message="false" customer_id="false" customer_username="false" customer_username_link="true" order_status_column="false" order_payment="false" order_shipping="false" order_coupon="false" order_variations="true" order_total="false" order_qty="false" order_qty_total="false" order_qty_total_column="false" limit="9999"]
 
 function wpcl_shortcode($atts) {
+
 	ob_start();
 
-	// Attributes
-	$atts = shortcode_atts(
-		array(
+	// Register / Enqueue style
+
+	wp_register_style( 'wpcl-shortcode-css', plugin_dir_url( __FILE__ ) . '../admin/assets/shortcode.css', false, '2.6.6' );
+	wp_enqueue_style( 'wpcl-shortcode-css' );
+
+	// Default attribute pairs
+	$pairs = array(
 			'product' => get_the_id(), // Get current product if no product specified
 			'order_status' => 'wc-completed',
 			'show_titles' => 'false',
@@ -51,15 +56,20 @@ function wpcl_shortcode($atts) {
 			'order_payment' => 'false',
 			'order_shipping' => 'false',
 			'order_coupon' => 'false',
+			'order_variations' => 'true',
 			'order_total' => 'false',
 			'order_qty' => 'false',
 			'order_qty_total' => 'false',
 			'order_qty_total_column' => 'false',
 			'limit' => 9999,
-		),
+		);
+
+	$atts = shortcode_atts(
+		$pairs,
 		$atts,
 		'customer_list'
 	);
+
 
 	// Attributes in var
 	$post_id = $atts['product'];
@@ -95,6 +105,7 @@ function wpcl_shortcode($atts) {
 	$order_payment = $atts['order_payment'];
 	$order_shipping = $atts['order_shipping'];
 	$order_coupon = $atts['order_coupon'];
+	$order_variations = $atts['order_variations'];
 	$order_total = $atts['order_total'];
 	$order_qty = $atts['order_qty'];
 	$order_qty_total = $atts['order_qty_total'];
@@ -168,260 +179,297 @@ function wpcl_shortcode($atts) {
 	if($order_payment == 'true' ) { $columns[] = __('Payment method', 'wc-product-customer-list'); }
 	if($order_shipping == 'true' ) { $columns[] = __('Shipping method', 'wc-product-customer-list'); }
 	if($order_coupon == 'true' ) { $columns[] = __('Coupons used', 'wc-product-customer-list'); }
-	if($product->get_type() == 'variable' ) { $columns[] = __('Variation', 'wc-product-customer-list'); }
+	if($product->get_type() == 'variable' && $order_variations == 'true' ) { $columns[] = __('Variation', 'wc-product-customer-list'); }
 	if($order_total == 'true' ) { $columns[] = __('Order total', 'wc-product-customer-list'); }
 	if($order_qty_total_column == 'true' ) { $columns[] = __('Total qty', 'wc-product-customer-list'); }
 	if($order_qty == 'true' ) { $columns[] = __('Qty', 'wc-product-customer-list'); }
 
+
+	// Action before table
+	do_action('wpcl_shortcode_before_table', $post_id, $columns, $atts);
+
 	if($item_sales) {
+		$email_list = array();
 		$productcount = array();
 		?>
-		<table id="list-table" style="width:100%">
-			<?php if($show_titles == 'true') { ?>
-			<thead>
-				<tr>
-					<?php foreach($columns as $column) { ?>
-					<th>
-						<strong><?php echo $column; ?></strong>
-					</th>
-					<?php } ?>
-				</tr>
-			</thead>
-			<?php } ?>
-			<tbody>
-				<?php
-				foreach( $item_sales as $sale ) {
-					$order = wc_get_order( $sale->order_id );
-					$formatted_total = $order->get_formatted_order_total();
-
-					// Get quantity
-					$refunded_qty = 0;
-					$items = $order->get_items();
-					foreach ($items as $item_id => $item) {
-						if($item['product_id'] == $post->ID) {
-							$refunded_qty += $order->get_qty_refunded_for_item($item_id);
-						}
-					}
-					$quantity = wc_get_order_item_meta( $sale->order_item_id, '_qty', true );
-					$quantity += $refunded_qty;
-
-					// Check for partially refunded orders
-					if($quantity == 0 && get_option( 'wpcl_order_partial_refunds', 'no' ) == 'yes') {
-
-					// Order has been partially refunded
-					} else {
+		<div class="wpcl">
+			<table id="list-table" style="width:100%" class="wpcl-shortcode">
+				<?php if($show_titles == 'true') { ?>
+				<thead>
+					<tr>
+						<?php foreach($columns as $column) { ?>
+						<th>
+							<strong><?php echo $column; ?></strong>
+						</th>
+						<?php } ?>
+						<?php
+							// Add wpcl_shortcode_add_column_head action
+							do_action('wpcl_shortcode_add_column_head', $columns, $atts);
 						?>
-						<tr>
-							<?php if($order_number == 'true') { ?>
-							<td>
-								<?php echo '<a href="' . admin_url( 'post.php' ) . '?post=' . $sale->order_id . '&action=edit" target="_blank">' . $sale->order_id . '</a>'; ?>
-							</td>
-							<?php } ?>
-							<?php if($order_date == 'true') { ?>
-							<td>
-								<?php echo date_format($order->get_date_created(), 'Y-m-d'); ?>
-							</td>
-							<?php } ?>
-							<?php if($billing_first_name == 'true') { ?>
-							<td>
-								<?php echo $order->get_billing_first_name(); ?>
-							</td>
-							<?php } ?>
-							<?php if($billing_last_name == 'true') { ?>
-							<td>
-								<?php echo $order->get_billing_last_name(); ?>
-							</td>
-							<?php } ?>
-							<?php if($billing_company == 'true') { ?>
-							<td>
-								<?php echo $order->get_billing_company(); ?>
-							</td>
-							<?php } ?>
-							<?php if($billing_email == 'true') { ?>
-							<td>
-								<?php echo '<a href="mailto:' . $order->get_billing_email() . '">' . $order->get_billing_email() . '</a>'; ?>
-							</td>
-							<?php } ?>
-							<?php if($billing_phone == 'true') { ?>
-							<td>
-								<?php echo '<a href="tel:' . $order->get_billing_phone() . '">' . $order->get_billing_phone() . '</a>'; ?>
-							</td>
-							<?php } ?>
-							<?php if($billing_address_1 == 'true') { ?>
-							<td>
-								<?php echo $order->get_billing_address_1(); ?>
-							</td>
-							<?php } ?>
-							<?php if($billing_address_2 == 'true') { ?>
-							<td>
-								<?php echo $order->get_billing_address_2(); ?>
-							</td>
-							<?php } ?>
-							<?php if($billing_city == 'true') { ?>
-							<td>
-								<?php echo $order->get_billing_city(); ?>
-							</td>
-							<?php } ?>
-							<?php if($billing_state == 'true') { ?>
-							<td>
-								<?php echo $order->get_billing_state(); ?>
-							</td>
-							<?php } ?>
-							<?php if($billing_postalcode == 'true') { ?>
-							<td>
-								<?php echo $order->get_billing_postcode(); ?>
-							</td>
-							<?php } ?>
-							<?php if($billing_country == 'true') { ?>
-							<td>
-								<?php echo $order->get_billing_country(); ?>
-							</td>
-							<?php } ?>
-							<?php if($shipping_first_name == 'true') { ?>
-							<td>
-								<?php echo $order->get_shipping_first_name(); ?>
-							</td>
-							<?php } ?>
-							<?php if($shipping_last_name == 'true') { ?>
-							<td>
-								<?php echo $order->get_shipping_last_name(); ?>
-							</td>
-							<?php } ?>
-							<?php if($shipping_company == 'true') { ?>
-							<td>
-								<?php echo $order->get_shipping_company(); ?>
-							</td>
-							<?php } ?>
-							<?php if($shipping_address_1 == 'true') { ?>
-							<td>
-								<?php echo $order->get_shipping_address_1(); ?>
-							</td>
-							<?php } ?>
-							<?php if($shipping_address_2 == 'true') { ?>
-							<td>
-								<?php echo $order->get_shipping_address_2(); ?>
-							</td>
-							<?php } ?>
-							<?php if($shipping_city == 'true') { ?>
-							<td>
-								<?php echo $order->get_shipping_city(); ?>
-							</td>
-							<?php } ?>
-							<?php if($shipping_state == 'true') { ?>
-							<td>
-								<?php echo $order->get_shipping_state(); ?>
-							</td>
-							<?php } ?>
-							<?php if($shipping_postalcode == 'true') { ?>
-							<td>
-								<?php echo $order->get_shipping_postcode(); ?>
-							</td>
-							<?php } ?>
-							<?php if($shipping_country == 'true') { ?>
-							<td>
-								<?php echo $order->get_shipping_country(); ?>
-							</td>
-							<?php } ?>
-							<?php if($customer_message == 'true') { ?>
-							<td>
-								<?php echo $order->get_customer_note(); ?>
-							</td>
-							<?php } ?>
-							<?php if($customer_id == 'true') { ?>
-							<td>
-								<?php 
-									if($order->get_customer_id()) {
-										echo '<a href="' . get_admin_url() . 'user-edit.php?user_id=' . $order->get_customer_id() . '" target="_blank">' . $order->get_customer_id() . '</a>';
-									}
-								?>
-							</td>
-							<?php } ?>
-							<?php if($customer_username == 'true') { ?>
-							<td>
-								<?php 
-									$customerid = $order->get_customer_id();
-									if($customerid) {
-										$user_info = get_userdata($customerid);
-										if($customer_username_link == 'true') {
-											echo '<a href="' . get_admin_url() . 'user-edit.php?user_id=' . $order->get_customer_id() . '" target="_blank">' . $user_info->user_login . '</a>';
-										} else {
-											echo $user_info->user_login;
-										}
-									}
-								?>
-							</td>
-							<?php } ?>
-							<?php if($order_status_column == 'true') { ?>
-							<td>
-								<?php
-									$status = wc_get_order_status_name($order->get_status());
-									echo $status;
-								?>
-							</td>
-							<?php } ?>
-							<?php if($order_payment == 'true') { ?>
-							<td>
-								<?php echo $order->get_payment_method_title(); ?>
-							</td>
-							<?php } ?>
-							<?php if($order_shipping == 'true') { ?>
-							<td>
-								<?php echo $order->get_shipping_method() ; ?>
-							</td>
-							<?php } ?>
-							<?php if($order_coupon == 'true') { ?>
-							<td>
-								<?php
-									$coupons = $order->get_used_coupons();
-									echo implode(', ',$coupons);
-								?>
-							</td>
-							<?php } ?>
+					</tr>
+				</thead>
+				<?php } ?>
+				<tbody>
+					<?php
+					foreach( $item_sales as $sale ) {
+						$order = wc_get_order( $sale->order_id );
+						$formatted_total = $order->get_formatted_order_total();
 
-							<?php if( 'variable' == $product->get_type() ) {
-								$item = $order->get_item($sale->order_item_id);
+						// Get quantity
+						$refunded_qty = 0;
+						$items = $order->get_items();
+						foreach ($items as $item_id => $item) {
+							if($item['product_id'] == $post->ID) {
+								$refunded_qty += $order->get_qty_refunded_for_item($item_id);
+							}
+						}
+						$quantity = wc_get_order_item_meta( $sale->order_item_id, '_qty', true );
+						$quantity += $refunded_qty;
+
+						// Check for partially refunded orders
+						if($quantity == 0 && get_option( 'wpcl_order_partial_refunds', 'no' ) == 'yes') {
+
+						// Order has been partially refunded
+						} else {
 							?>
-							<td>
-								<?php 
-									foreach($item->get_meta_data() as $itemvariation) {
-										echo '<strong>' . wc_attribute_label($itemvariation->key) . '</strong>: &nbsp;' . wc_attribute_label($itemvariation->value) . '<br />';
-									}
+							<tr>
+								<?php if($order_number == 'true') { ?>
+								<td>
+									<p><?php echo '<a href="' . admin_url( 'post.php' ) . '?post=' . $sale->order_id . '&action=edit" target="_blank">' . $sale->order_id . '</a>'; ?></p>
+								</td>
+								<?php } ?>
+								<?php if($order_date == 'true') { ?>
+								<td>
+									<p><?php echo date_format($order->get_date_created(), 'Y-m-d'); ?></p>
+								</td>
+								<?php } ?>
+								<?php if($billing_first_name == 'true') { ?>
+								<td>
+									<p><?php echo $order->get_billing_first_name(); ?></p>
+								</td>
+								<?php } ?>
+								<?php if($billing_last_name == 'true') { ?>
+								<td>
+									<p><?php echo $order->get_billing_last_name(); ?></p>
+								</td>
+								<?php } ?>
+								<?php if($billing_company == 'true') { ?>
+								<td>
+									<p><?php echo $order->get_billing_company(); ?></p>
+								</td>
+								<?php } ?>
+								<?php if($billing_email == 'true') { ?>
+								<td>
+									<p>?php echo '<a href="mailto:' . $order->get_billing_email() . '">' . $order->get_billing_email() . '</a>'; ?></p>
+								</td>
+								<?php } ?>
+								<?php if($billing_phone == 'true') { ?>
+								<td>
+									<p><?php echo '<a href="tel:' . $order->get_billing_phone() . '">' . $order->get_billing_phone() . '</a>'; ?></p>
+								</td>
+								<?php } ?>
+								<?php if($billing_address_1 == 'true') { ?>
+								<td>
+									<p><?php echo $order->get_billing_address_1(); ?></p>
+								</td>
+								<?php } ?>
+								<?php if($billing_address_2 == 'true') { ?>
+								<td>
+									<p><?php echo $order->get_billing_address_2(); ?></p>
+								</td>
+								<?php } ?>
+								<?php if($billing_city == 'true') { ?>
+								<td>
+									<p><?php echo $order->get_billing_city(); ?></p>
+								</td>
+								<?php } ?>
+								<?php if($billing_state == 'true') { ?>
+								<td>
+									<p><?php echo $order->get_billing_state(); ?></p>
+								</td>
+								<?php } ?>
+								<?php if($billing_postalcode == 'true') { ?>
+								<td>
+									<p><?php echo $order->get_billing_postcode(); ?></p>
+								</td>
+								<?php } ?>
+								<?php if($billing_country == 'true') { ?>
+								<td>
+									<p><?php echo $order->get_billing_country(); ?></p>
+								</td>
+								<?php } ?>
+								<?php if($shipping_first_name == 'true') { ?>
+								<td>
+									<p><?php echo $order->get_shipping_first_name(); ?></p>
+								</td>
+								<?php } ?>
+								<?php if($shipping_last_name == 'true') { ?>
+								<td>
+									<p><?php echo $order->get_shipping_last_name(); ?></p>
+								</td>
+								<?php } ?>
+								<?php if($shipping_company == 'true') { ?>
+								<td>
+									<p><?php echo $order->get_shipping_company(); ?></p>
+								</td>
+								<?php } ?>
+								<?php if($shipping_address_1 == 'true') { ?>
+								<td>
+									<p><?php echo $order->get_shipping_address_1(); ?></p>
+								</td>
+								<?php } ?>
+								<?php if($shipping_address_2 == 'true') { ?>
+								<td>
+									<p><?php echo $order->get_shipping_address_2(); ?></p>
+								</td>
+								<?php } ?>
+								<?php if($shipping_city == 'true') { ?>
+								<td>
+									<p><?php echo $order->get_shipping_city(); ?></p>
+								</td>
+								<?php } ?>
+								<?php if($shipping_state == 'true') { ?>
+								<td>
+									<p><?php echo $order->get_shipping_state(); ?></p>
+								</td>
+								<?php } ?>
+								<?php if($shipping_postalcode == 'true') { ?>
+								<td>
+									<p><?php echo $order->get_shipping_postcode(); ?></p>
+								</td>
+								<?php } ?>
+								<?php if($shipping_country == 'true') { ?>
+								<td>
+									<p><?php echo $order->get_shipping_country(); ?></p>
+								</td>
+								<?php } ?>
+								<?php if($customer_message == 'true') { ?>
+								<td>
+									<p><?php echo $order->get_customer_note(); ?></p>
+								</td>
+								<?php } ?>
+								<?php if($customer_id == 'true') { ?>
+								<td>
+									<p><?php 
+										if($order->get_customer_id()) {
+											echo '<a href="' . get_admin_url() . 'user-edit.php?user_id=' . $order->get_customer_id() . '" target="_blank">' . $order->get_customer_id() . '</a>';
+										}
+									?></p>
+								</td>
+								<?php } ?>
+								<?php if($customer_username == 'true') { ?>
+								<td>
+									<p><?php 
+										$customerid = $order->get_customer_id();
+										if($customerid) {
+											$user_info = get_userdata($customerid);
+											if($customer_username_link == 'true') {
+												echo '<a href="' . get_admin_url() . 'user-edit.php?user_id=' . $order->get_customer_id() . '" target="_blank">' . $user_info->user_login . '</a>';
+											} else {
+												echo $user_info->user_login;
+											}
+										}
+									?></p>
+								</td>
+								<?php } ?>
+								<?php if($order_status_column == 'true') { ?>
+								<td>
+									<p>
+									<?php
+										$status = wc_get_order_status_name($order->get_status());
+										echo $status;
+									?></p>
+								</td>
+								<?php } ?>
+								<?php if($order_payment == 'true') { ?>
+								<td>
+									<p><?php echo $order->get_payment_method_title(); ?></p>
+								</td>
+								<?php } ?>
+								<?php if($order_shipping == 'true') { ?>
+								<td>
+									<p><?php echo $order->get_shipping_method() ; ?></p>
+								</td>
+								<?php } ?>
+								<?php if($order_coupon == 'true') { ?>
+								<td>
+									<p><?php
+										$coupons = $order->get_used_coupons();
+										echo implode(', ',$coupons);
+									?></p>
+								</td>
+								<?php } ?>
+
+								<?php if( 'variable' == $product->get_type() && $order_variations == 'true' ) {
+									$item = $order->get_item($sale->order_item_id);
 								?>
-							</td>
-							<?php }  ?>
-							<?php if($order_total == 'true') { ?>
-							<td>
-								<?php echo $order->get_formatted_order_total(); ?>
-							</td>
-							<?php } ?>
-							<?php if($order_qty == 'true') {
-									$productcount[] = $quantity;
-							?>
-							<td>
-								<?php echo $quantity;  ?>
-							</td>
-							<?php } ?>
-							<?php if($order_qty_total_column == 'true') { ?>
-							<td>
-								<?php echo get_post_meta($post_id,'total_sales', true);  ?>
-							</td>
-							<?php } ?>
-						</tr>
-					<?php 
-					} // End partial refund check
-				} // End foreach
-				?>
-			</tbody>
-		</table>
+								<td>
+									<p>
+										<?php 
+											foreach($item->get_meta_data() as $itemvariation) {
+												echo '<strong>' . wc_attribute_label($itemvariation->key) . '</strong>: &nbsp;' . wc_attribute_label($itemvariation->value) . '<br />';
+											}
+										?>
+									</p>
+								</td>
+								<?php }  ?>
+								<?php if($order_total == 'true') { ?>
+								<td>
+									<p><?php echo $order->get_formatted_order_total(); ?></p>
+								</td>
+								<?php } ?>
+								<?php if($order_qty == 'true') {
+										$productcount[] = $quantity;
+								?>
+								<td>
+									<p><?php echo $quantity; ?></p>
+								</td>
+								<?php } ?>
+								<?php if($order_qty_total_column == 'true') { ?>
+								<td>
+									<p><?php echo get_post_meta($post_id,'total_sales', true);  ?></p>
+								</td>
+								<?php } ?>
+								<?php 
+									// Add wpcl_shortcode_add_row
+									do_action('wpcl_shortcode_add_row', $order, $product, $sale, $atts);
+								?>
+							</tr>
+
+						<?php if ( $order->get_billing_email() ) {
+								$email_list[] = $order->get_billing_email();
+							}
+						} // End partial refund check
+					} // End foreach
+					?>
+				</tbody>
+			</table>
+		
 		<?php if($order_qty_total == 'true') { ?>
 		<p class="total">
 			<?php echo '<strong>' . __('Total', 'wc-product-customer-list') . ' : </strong>' . array_sum($productcount); ?>
 		</p>
 		<?php } ?>
 
+		<?php do_action('wpcl_shortcode_after_table', $post_id, $email_list, $atts); ?>
+
+	</div>
+
 	<?php } else {
 		_e('This product currently has no customers', 'wc-product-customer-list');
 	}
-	return ob_get_clean();
+
+
+
+	$out = ob_get_clean();
+
+	$shortcode = 'customer_list';
+	apply_filters( 'shortcode_atts_{$shortcode}', $out, $pairs, $atts, $shortcode );
+
+	return $out;
 }
 add_shortcode( 'customer_list', 'wpcl_shortcode' );
+
+
+	// Add filter to shortcode attributes
+
