@@ -2,7 +2,7 @@
 
 /**
  * @package WC_Product_Customer_List
- * @version 2.6.8
+ * @version 2.6.9
  */
 function wpcl_add_section( $sections )
 {
@@ -339,6 +339,10 @@ function wpcl_all_settings( $settings, $current_section )
             'A5'     => __( 'A5', 'wc-product-customer-list' ),
         ),
             'desc_tip' => false,
+        );
+        $settings_wpcl[] = array(
+            'type' => 'sectionend',
+            'id'   => 'wpcl-settings',
         );
         $settings_wpcl = apply_filters( 'wpcl_settings_filter', $settings_wpcl );
         return $settings_wpcl;
