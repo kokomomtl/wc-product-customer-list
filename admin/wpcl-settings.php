@@ -10,6 +10,34 @@ function wpcl_add_section( $sections ) {
 }
 add_filter( 'woocommerce_get_sections_products', 'wpcl_add_section' );
 
+
+if ( wpcl_activation()->is_plan('premium') ) {
+	// Pro 
+
+	// Get order custom fields
+	function wpcl_order_meta_keys(){
+	    global $wpdb;
+	    $post_type = 'shop_order';
+	    $query = "
+	        SELECT DISTINCT($wpdb->postmeta.meta_key) 
+	        FROM $wpdb->posts 
+	        LEFT JOIN $wpdb->postmeta 
+	        ON $wpdb->posts.ID = $wpdb->postmeta.post_id 
+	        WHERE $wpdb->posts.post_type = '%s' 
+	        AND $wpdb->postmeta.meta_key != '' 
+	        AND $wpdb->postmeta.meta_key NOT RegExp '(^[_0-9].+$)' 
+	        AND $wpdb->postmeta.meta_key NOT RegExp '(^[0-9]+$)'
+	    ";
+	    $meta_keys = $wpdb->get_col($wpdb->prepare($query, $post_type));
+	    $custom_fields = array();
+	    foreach($meta_keys as $meta_key) {
+	    	$custom_fields[$meta_key] = $meta_key;
+	    }
+	    return $custom_fields;
+	}
+
+}
+
 function wpcl_all_settings( $settings, $current_section ) {
 
 	// Get all available statuses
@@ -324,13 +352,47 @@ function wpcl_all_settings( $settings, $current_section ) {
 			'desc_tip' =>  false,
 		);
 
-		$settings_wpcl[] = array( 'type' => 'sectionend', 'id' => 'wpcl-settings' );
+		if ( wpcl_activation()->is_plan('premium') ) {
+
+			// Pro
+
+			$settings_wpcl[] = array( 'type' => 'sectionend', 'id' => 'wpcl-settings' );
+
+			$settings_wpcl[] = array( 'name' => __( 'Product Customer List for WooCommerce Pro', 'wc-product-customer-list-pro' ), 'type' => 'title', 'id' => 'wpclpro' );
+
+			$settings_wpcl[] = array(
+				'name'    => __( 'Checkout custom fields', 'woocommerce' ),
+				'desc'    => __( 'Select one or multiple custom fields to display in the table.', 'wc-product-customer-list' ),
+				'id'      => 'wpcl_custom_fields',
+				'css'     => 'min-width:300px;',
+				'type'    => 'multiselect',
+				'options' => wpcl_order_meta_keys(),
+				'desc_tip' =>  true,
+			);
+
+			// Wootours
+
+			if ( function_exists( 'wt_get_plugin_url' ) ) {
+				$settings_wpcl[] = array(
+					'name'		=> __( 'WooTours column', 'wc-product-customer-list-pro' ),
+					'id'		=> 'wpcl_wootours',
+					'default'	=> 'no',
+					'type'		=> 'checkbox',
+					'css'		=> 'min-width:300px;',
+					'desc'		=> __( 'Activate WooTours column', 'wc-product-customer-list-pro' ),
+				);
+			}
+
+			$settings_wpcl[] = array( 'type' => 'sectionend', 'id' => 'wpclpro' );
+
+		}
 
 		$settings_wpcl = apply_filters( 'wpcl_settings_filter', $settings_wpcl );
 		
 		return $settings_wpcl;
 
 	} else {
+
 		return $settings;
 	}
 }
