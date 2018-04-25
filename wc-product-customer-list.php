@@ -2,13 +2,13 @@
 
 /**
  * @package WC_Product_Customer_List
- * @version 2.6.7
+ * @version 2.6.8
  */
 /*
 Plugin Name: Product Customer List for WooCommerce
 Plugin URI: https://wordpress.org/plugins/wc-product-customer-list/
 Description: Displays a list of customers that bought a product on the edit page.
-Version: 2.6.7
+Version: 2.6.8
 Author: Kokomo
 Author URI: http://www.kokomoweb.com/
 Developer: Thierry Lavergne

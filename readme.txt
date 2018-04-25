@@ -3,7 +3,7 @@ Contributors: kokomoweb, freemius
 Tags: woocommerce, customer list, who bought, admin order list, product-specific, export customers to csv, email customers, customer list, customer, list, print, front-end customers, shortcode
 Requires at least: 4.0
 Tested up to: 4.9.5
-Stable tag: 2.6.7
+Stable tag: 2.6.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,7 +46,7 @@ Great for sending out e-mails to customers for product recalls or for courses.
 * Datatables functionalities for the shortcode (export PDF, export CSV, print, email customers, search, paging, etc...).
 * Much more coming soon!
 
-To upgrade the plugin to the premium version, simply click on "upgrade" under the plugin title in the plugin list page, or [purchase it here](https://checkout.freemius.com/mode/dialog/plugin/2009/plan/2994/). Make sure. you have opted in in order to see the upgrade link.
+To upgrade the plugin to the premium version, simply click on "upgrade" under the plugin title in the plugin list page, or [purchase it here](https://checkout.freemius.com/mode/dialog/plugin/2009/plan/2994/).
 
 = Contributors: =, freemius
 * Support for variable products: [Alexandre Simard](https://profiles.wordpress.org/brocheafoin/)
@@ -153,6 +153,9 @@ Many hooks and filters. Documentation coming soon.
 2. The settings page.
 
 == Changelog ==
+
+= 2.6.8 =
+* Fixed issue with settings page
 
 = 2.6.7 =
 * Added support for Preemius / licensing system
