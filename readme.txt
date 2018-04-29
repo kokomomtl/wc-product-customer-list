@@ -1,9 +1,9 @@
 === Product Customer List for WooCommerce ===
-Contributors: kokomoweb, freemius
-Tags: woocommerce, customer list, who bought, admin order list, product-specific, export customers to csv, email customers, customer list, customer, list, print, front-end customers, shortcode
+Contributors: kokomoweb
+Tags: woocommerce, customer list, who bought, admin order list, product-specific, export customers to csv, email customers, customer list, customer, list, print, front-end, tickets, shows, courses, customers, shortcode
 Requires at least: 4.0
 Tested up to: 4.9.5
-Stable tag: 2.6.9
+Stable tag: 2.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,7 +13,7 @@ Display a list of customers who bought a specific product at the bottom of the p
 
 A plugin that simply displays a list of customers who bought a specific product at the bottom of the WooCommerce product edit page or as a shortcode. You can also send an email to the list of customers, print the list or export it as a CSV, PDF or Excel file. Requires WooCommerce 2.2+ to be installed and activated. 
 
-Great for sending out e-mails to customers for product recalls or for courses.
+Great for sending out e-mails or getting a list of customers for courses, for shows or for product recalls.
 
 = Features: =
 
@@ -41,14 +41,17 @@ Great for sending out e-mails to customers for product recalls or for courses.
 
 = Premium version: =
 
+* Shortcode by variation ID
 * Support for Custom Fields
-* Support for WooTours
+* Support for [WooCommerce Checkout Field Editor](https://woocommerce.com/products/woocommerce-checkout-field-editor/)
+* Support for [WooTours](https://codecanyon.net/item/wootour-woocommerce-travel-tour-and-appointment-booking/19404740?ref=kokomoweb)
+* Support for [Woocommerce Easy Checkout Field Editor](https://codecanyon.net/item/woocommerce-easy-checkout-field-editor/9799777?ref=kokomoweb)
 * Datatables functionalities for the shortcode (export PDF, export CSV, print, email customers, search, paging, etc...).
 * Much more coming soon!
 
 To upgrade the plugin to the premium version, simply click on "upgrade" under the plugin title in the plugin list page, or [purchase it here](https://checkout.freemius.com/mode/dialog/plugin/2009/plan/2994/).
 
-= Contributors: =, freemius
+= Contributors: =
 * Support for variable products: [Alexandre Simard](https://profiles.wordpress.org/brocheafoin/)
 * Dutch translation: [pieterclaesen](https://wordpress.org/support/profile/pieterclaesen)
 * Portuguese (Brazil) translation: [Marcello Ruoppolo](https://profiles.wordpress.org/mragenciadigital)
@@ -73,7 +76,7 @@ To display the list in the front end, simply use the following shortcode: [custo
 * **product** : The ID of the product for which you wish to display the customer list. If you do not put an ID number, it will use the ID of the current product (if used on a product page)
 * **order_status** : The order status for which the shortcode will display your customers. If you have more than one, seperate them with commas. Options are: wc-completed, wc-processing, wc-on-hold, wc-pending, wc-cancelled, wc-refunded, wc-failed. Default is "wc-completed".
 * **show_titles** : Display the titles of each column in the head of the table. Titles cannot be modified at this time.
-* **order_number** : The ID of the order.
+* **order_number** : The ID of the order. Can be a variation ID in the premium version of the plugin.
 * **order_date** : The date of the order.
 * **billing_first_name** : Billing first name.
 * **billing_last_name** : Billing last name.
@@ -109,7 +112,7 @@ To display the list in the front end, simply use the following shortcode: [custo
 * **order_qty_total_column** : The total of products purchased for all customers. This field is added as a column.
 * **limit** : The amount of orders you want to display.
 
-**Pro version**
+**Premium version**
 
 * **custom_fields** : A comma separated list of your custom field keys. You can copy the keys that are available in the list in the admin settings.
 * **sortable** : Activates datatables script and enables sorting by column. Default: false.
@@ -153,6 +156,10 @@ Many hooks and filters. Documentation coming soon.
 2. The settings page.
 
 == Changelog ==
+
+= 2.7.0 =
+* Fixed issue with billing email in shortcode
+* Premium version: Added support for shortcode by variation ID.
 
 = 2.6.9 =
 * Fixed issue with settings page (again)

@@ -2,7 +2,7 @@
 
 /**
  * @package WC_Product_Customer_List
- * @version 2.6.7
+ * @version 2.7.0
  */
 
 if ( !defined( 'ABSPATH' ) ) {
@@ -137,7 +137,10 @@ function wpcl_shortcode( $atts )
     $order_statuses_string = "'" . implode( "', '", $order_statuses ) . "'";
     $post_id_arr = array_map( 'esc_sql', (array) $post_id );
     $post_string = "'" . implode( "', '", $post_id_arr ) . "'";
-    $item_sales = $wpdb->get_results( $wpdb->prepare( "SELECT o.ID as order_id, oi.order_item_id FROM\n\t\t{$wpdb->prefix}woocommerce_order_itemmeta oim\n\t\tINNER JOIN {$wpdb->prefix}woocommerce_order_items oi\n\t\tON oim.order_item_id = oi.order_item_id\n\t\tINNER JOIN {$wpdb->posts} o\n\t\tON oi.order_id = o.ID\n\t\tWHERE oim.meta_key = %s\n\t\tAND oim.meta_value IN ( {$post_string} )\n\t\tAND o.post_status IN ( {$order_statuses_string} )\n\t\tAND o.post_type NOT IN ('shop_order_refund')\n\t\tORDER BY o.ID DESC\n\t\tLIMIT {$limit}", '_product_id' ) );
+    // Check if ID is for a product
+    if ( get_post_type( $post_id ) == 'product' ) {
+        $item_sales = $wpdb->get_results( $wpdb->prepare( "SELECT o.ID as order_id, oi.order_item_id FROM\n\t\t\t{$wpdb->prefix}woocommerce_order_itemmeta oim\n\t\t\tINNER JOIN {$wpdb->prefix}woocommerce_order_items oi\n\t\t\tON oim.order_item_id = oi.order_item_id\n\t\t\tINNER JOIN {$wpdb->posts} o\n\t\t\tON oi.order_id = o.ID\n\t\t\tWHERE oim.meta_key = %s\n\t\t\tAND oim.meta_value IN ( {$post_string} )\n\t\t\tAND o.post_status IN ( {$order_statuses_string} )\n\t\t\tAND o.post_type NOT IN ('shop_order_refund')\n\t\t\tORDER BY o.ID DESC\n\t\t\tLIMIT {$limit}", '_product_id' ) );
+    }
     // Get selected columns from the options page
     $product = WC()->product_factory->get_product( $post_id );
     $columns = array();
@@ -369,13 +372,17 @@ function wpcl_shortcode( $atts )
                 
                 ?>
 								<?php 
+                
                 if ( $billing_email == 'true' ) {
                     ?>
 								<td>
-									<p>?php echo '<a href="mailto:' . $order->get_billing_email() . '">' . $order->get_billing_email() . '</a>'; ?></p>
+									<p><?php 
+                    echo  '<a href="mailto:' . $order->get_billing_email() . '">' . $order->get_billing_email() . '</a>' ;
+                    ?></p>
 								</td>
 								<?php 
                 }
+                
                 ?>
 								<?php 
                 
