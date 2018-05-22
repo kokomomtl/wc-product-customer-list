@@ -2,7 +2,7 @@
 
 /**
  * @package WC_Product_Customer_List
- * @version 2.6.6
+ * @version 2.7.3
  */
 // Load metabox at bottom of product admin screen
 
@@ -658,7 +658,7 @@ if ( !function_exists( 'wpcl_post_class_meta_box' ) ) {
 									
 									<?php 
                     
-                    if ( 'variable' == $product->get_type() ) {
+                    if ( $product->get_type() == 'variable' && get_option( 'wpcl_variations', 'yes' ) == 'yes' ) {
                         $item = $order->get_item( $sale->order_item_id );
                         ?>
 									<td>
