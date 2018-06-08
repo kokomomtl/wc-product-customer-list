@@ -13,6 +13,14 @@ function wpcl_add_section( $sections )
 add_filter( 'woocommerce_get_sections_products', 'wpcl_add_section' );
 function wpcl_all_settings( $settings, $current_section )
 {
+    // Enqueue admin stylesheet
+    wp_register_style(
+        'wpcl-settings-css',
+        plugin_dir_url( __FILE__ ) . '../admin/assets/settings.css',
+        false,
+        '2.7.4'
+    );
+    wp_enqueue_style( 'wpcl-settings-css' );
     // Get all available statuses
     $statuses = array();
     foreach ( get_post_stati( array(
@@ -40,7 +48,7 @@ function wpcl_all_settings( $settings, $current_section )
             'id'   => 'wpcl-settings',
         );
         $settings_wpcl[] = array(
-            'name'     => __( 'Order status', 'woocommerce' ),
+            'name'     => __( 'Order status', 'wc-product-customer-list' ),
             'desc'     => __( 'Select one or multiple order statuses for which you will display the customers.', 'wc-product-customer-list' ),
             'id'       => 'wpcl_order_status_select',
             'css'      => 'min-width:300px;',
@@ -314,7 +322,7 @@ function wpcl_all_settings( $settings, $current_section )
             'desc'    => __( 'Enable shipping country column', 'wc-product-customer-list' ),
         );
         $settings_wpcl[] = array(
-            'name'     => __( 'PDF orientation', 'woocommerce' ),
+            'name'     => __( 'PDF orientation', 'wc-product-customer-list' ),
             'id'       => 'wpcl_export_pdf_orientation',
             'css'      => 'min-width:300px;',
             'default'  => array( 'portrait' ),
@@ -326,7 +334,7 @@ function wpcl_all_settings( $settings, $current_section )
             'desc_tip' => false,
         );
         $settings_wpcl[] = array(
-            'name'     => __( 'PDF page size', 'woocommerce' ),
+            'name'     => __( 'PDF page size', 'wc-product-customer-list' ),
             'id'       => 'wpcl_export_pdf_pagesize',
             'css'      => 'min-width:300px;',
             'default'  => array( 'letter' ),

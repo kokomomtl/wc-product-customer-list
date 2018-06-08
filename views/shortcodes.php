@@ -231,7 +231,7 @@ function wpcl_shortcode( $atts )
     if ( $order_coupon == 'true' ) {
         $columns[] = __( 'Coupons used', 'wc-product-customer-list' );
     }
-    if ( $product->get_type() == 'variable' && $order_variations == 'true' ) {
+    if ( $order_variations == 'true' ) {
         $columns[] = __( 'Variation', 'wc-product-customer-list' );
     }
     if ( $order_total == 'true' ) {
@@ -703,7 +703,7 @@ function wpcl_shortcode( $atts )
 
 								<?php 
                 
-                if ( 'variable' == $product->get_type() && $order_variations == 'true' ) {
+                if ( $order_variations == 'true' ) {
                     $item = $order->get_item( $sale->order_item_id );
                     ?>
 								<td>

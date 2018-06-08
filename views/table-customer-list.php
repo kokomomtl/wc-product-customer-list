@@ -144,7 +144,7 @@ if ( !function_exists( 'wpcl_post_class_meta_box' ) ) {
         if ( get_option( 'wpcl_order_coupon', 'no' ) == 'yes' ) {
             $columns[] = __( 'Coupons used', 'wc-product-customer-list' );
         }
-        if ( $product->get_type() == 'variable' && get_option( 'wpcl_variations', 'yes' ) == 'yes' ) {
+        if ( get_option( 'wpcl_variations', 'yes' ) == 'yes' ) {
             $columns[] = __( 'Variation', 'wc-product-customer-list' );
         }
         if ( get_option( 'wpcl_order_total', 'no' ) == 'yes' ) {
@@ -658,7 +658,7 @@ if ( !function_exists( 'wpcl_post_class_meta_box' ) ) {
 									
 									<?php 
                     
-                    if ( $product->get_type() == 'variable' && get_option( 'wpcl_variations', 'yes' ) == 'yes' ) {
+                    if ( get_option( 'wpcl_variations', 'yes' ) == 'yes' ) {
                         $item = $order->get_item( $sale->order_item_id );
                         ?>
 									<td>
