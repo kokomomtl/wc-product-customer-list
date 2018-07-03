@@ -2,7 +2,7 @@
 
 /**
  * @package WC_Product_Customer_List
- * @version 2.7.3
+ * @version 2.7.5
  */
 // Load metabox at bottom of product admin screen
 
@@ -131,6 +131,9 @@ if ( !function_exists( 'wpcl_post_class_meta_box' ) ) {
         }
         if ( get_option( 'wpcl_customer_username', 'no' ) == 'yes' ) {
             $columns[] = __( 'Customer username', 'wc-product-customer-list' );
+        }
+        if ( get_option( 'wpcl_customer_display_name', 'no' ) == 'yes' ) {
+            $columns[] = __( 'Customer display name', 'wc-product-customer-list' );
         }
         if ( get_option( 'wpcl_order_status', 'no' ) == 'yes' ) {
             $columns[] = __( 'Order Status', 'wc-product-customer-list' );
@@ -588,6 +591,25 @@ if ( !function_exists( 'wpcl_post_class_meta_box' ) ) {
                         
                         ?>
 										</p>
+									</td>
+									<?php 
+                    }
+                    
+                    ?>
+									<?php 
+                    
+                    if ( get_option( 'wpcl_customer_display_name', 'no' ) == 'yes' ) {
+                        ?>
+									<td>
+										<p><?php 
+                        $customerid = $order->get_customer_id();
+                        
+                        if ( $customerid ) {
+                            $user_info = get_userdata( $customerid );
+                            echo  $user_info->display_name ;
+                        }
+                        
+                        ?></p>
 									</td>
 									<?php 
                     }

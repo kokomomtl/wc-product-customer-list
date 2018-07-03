@@ -2,7 +2,7 @@
 
 /**
  * @package WC_Product_Customer_List
- * @version 2.7.0
+ * @version 2.7.5
  */
 
 if ( !defined( 'ABSPATH' ) ) {
@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) {
 }
 
 // Create Shortcode customer_list
-// Use the shortcode: [customer_list product="1111" hide_titles="false" order_status="wc-completed" order_number="false" order_date="false" billing_first_name="true" billing_last_name="true" billing_company="false" billing_email="false" billing_phone="false" billing_address_1="false" billing_address_2="false" billing_city="false" billing_state="false" billing_postalcode="false" billing_country="false" shipping_first_name="false" shipping_last_name="false" shipping_company="false" shipping_address_1="false" shipping_address_2="false" shipping_city="false" shipping_state="false" shipping_postalcode="false" shipping_country="false" customer_message="false" customer_id="false" customer_username="false" customer_username_link="true" order_status_column="false" order_payment="false" order_shipping="false" order_coupon="false" order_variations="true" order_total="false" order_qty="false" order_qty_total="false" order_qty_total_column="false" limit="9999"]
+// Use the shortcode: [customer_list product="1111" table_title="" hide_titles="false" order_status="wc-completed" order_number="false" order_date="false" billing_first_name="true" billing_last_name="true" billing_company="false" billing_email="false" billing_phone="false" billing_address_1="false" billing_address_2="false" billing_city="false" billing_state="false" billing_postalcode="false" billing_country="false" shipping_first_name="false" shipping_last_name="false" shipping_company="false" shipping_address_1="false" shipping_address_2="false" shipping_city="false" shipping_state="false" shipping_postalcode="false" shipping_country="false" customer_message="false" customer_id="false" customer_username="false" customer_username_link="true" customer_display_name="false" order_status_column="false" order_payment="false" order_shipping="false" order_coupon="false" order_variations="true" order_total="false" order_qty="false" order_qty_total="false" order_qty_total_column="false" limit="9999"]
 function wpcl_shortcode( $atts )
 {
     ob_start();
@@ -26,6 +26,7 @@ function wpcl_shortcode( $atts )
     // Default attribute pairs
     $pairs = array(
         'product'                => get_the_id(),
+        'table_title'            => NULL,
         'order_status'           => 'wc-completed',
         'show_titles'            => 'false',
         'order_number'           => 'false',
@@ -54,6 +55,7 @@ function wpcl_shortcode( $atts )
         'customer_id'            => 'false',
         'customer_username'      => 'false',
         'customer_username_link' => 'true',
+        'customer_display_name'  => 'false',
         'order_status_column'    => 'false',
         'order_payment'          => 'false',
         'order_shipping'         => 'false',
@@ -64,7 +66,7 @@ function wpcl_shortcode( $atts )
         'order_qty_total'        => 'false',
         'order_qty_total_column' => 'false',
         'limit'                  => 9999,
-        'custom_fields'          => '',
+        'custom_fields'          => NULL,
         'sortable'               => 'false',
         'export_pdf'             => 'false',
         'export_csv'             => 'false',
@@ -81,6 +83,7 @@ function wpcl_shortcode( $atts )
     $atts = shortcode_atts( $pairs, $atts, 'customer_list' );
     // Attributes in var
     $post_id = $atts['product'];
+    $table_title = $atts['table_title'];
     $order_status = $atts['order_status'];
     $show_titles = $atts['show_titles'];
     $order_number = $atts['order_number'];
@@ -109,6 +112,7 @@ function wpcl_shortcode( $atts )
     $customer_id = $atts['customer_id'];
     $customer_username = $atts['customer_username'];
     $customer_username_link = $atts['customer_username_link'];
+    $customer_display_name = $atts['customer_display_name'];
     $order_status_column = $atts['order_status_column'];
     $order_payment = $atts['order_payment'];
     $order_shipping = $atts['order_shipping'];
@@ -219,6 +223,9 @@ function wpcl_shortcode( $atts )
     if ( $customer_username == 'true' ) {
         $columns[] = __( 'Customer username', 'wc-product-customer-list' );
     }
+    if ( $customer_display_name == 'true' ) {
+        $columns[] = __( 'Display Name', 'wc-product-customer-list' );
+    }
     if ( $order_status_column == 'true' ) {
         $columns[] = __( 'Order Status', 'wc-product-customer-list' );
     }
@@ -250,6 +257,21 @@ function wpcl_shortcode( $atts )
         $columns,
         $atts
     );
+    ?>
+
+	<?php 
+    
+    if ( $table_title ) {
+        ?>
+		<h3><?php 
+        echo  $table_title ;
+        ?></h3>
+	<?php 
+    }
+    
+    ?>
+
+	<?php 
     
     if ( $item_sales ) {
         $email_list = array();
@@ -257,33 +279,29 @@ function wpcl_shortcode( $atts )
         ?>
 		<div class="wpcl">
 			<table id="list-table" style="width:100%" class="wpcl-shortcode">
-				<?php 
-        
-        if ( $show_titles == 'true' ) {
-            ?>
-				<thead>
+				<thead <?php 
+        if ( $show_titles == 'false' ) {
+            echo  'style="display: none"' ;
+        }
+        ?>>
 					<tr>
 						<?php 
-            foreach ( $columns as $column ) {
-                ?>
+        foreach ( $columns as $column ) {
+            ?>
 						<th>
 							<strong><?php 
-                echo  $column ;
-                ?></strong>
+            echo  $column ;
+            ?></strong>
 						</th>
 						<?php 
-            }
-            ?>
+        }
+        ?>
 						<?php 
-            // Add wpcl_shortcode_add_column_head action
-            do_action( 'wpcl_shortcode_add_column_head', $columns, $atts );
-            ?>
+        // Add wpcl_shortcode_add_column_head action
+        do_action( 'wpcl_shortcode_add_column_head', $columns, $atts );
+        ?>
 					</tr>
 				</thead>
-				<?php 
-        }
-        
-        ?>
 				<tbody>
 					<?php 
         foreach ( $item_sales as $sale ) {
@@ -647,6 +665,25 @@ function wpcl_shortcode( $atts )
                 ?>
 								<?php 
                 
+                if ( $customer_display_name == 'true' ) {
+                    ?>
+								<td>
+									<p><?php 
+                    $customerid = $order->get_customer_id();
+                    
+                    if ( $customerid ) {
+                        $user_info = get_userdata( $customerid );
+                        echo  $user_info->display_name ;
+                    }
+                    
+                    ?></p>
+								</td>
+								<?php 
+                }
+                
+                ?>
+								<?php 
+                
                 if ( $order_status_column == 'true' ) {
                     ?>
 								<td>
@@ -795,6 +832,20 @@ function wpcl_shortcode( $atts )
             echo  '<strong>' . __( 'Total', 'wc-product-customer-list' ) . ' : </strong>' . array_sum( $productcount ) ;
             ?>
 		</p>
+		<?php 
+        }
+        
+        ?>
+
+		<?php 
+        
+        if ( $email_all == 'true' ) {
+            ?>
+			<a href="mailto:?bcc=<?php 
+            echo  $email_list ;
+            ?>" class="button"><?php 
+            _e( 'Email all customers', 'wc-product-customer-list' );
+            ?></a>
 		<?php 
         }
         

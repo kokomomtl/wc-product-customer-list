@@ -2,7 +2,7 @@
 
 /**
  * @package WC_Product_Customer_List
- * @version 2.6.9
+ * @version 2.7.5
  */
 function wpcl_add_section( $sections )
 {
@@ -160,6 +160,14 @@ function wpcl_all_settings( $settings, $current_section )
             'type'    => 'checkbox',
             'css'     => 'min-width:300px;',
             'desc'    => __( 'Enable customer username column', 'wc-product-customer-list' ),
+        );
+        $settings_wpcl[] = array(
+            'name'    => __( 'Customer display name', 'wc-product-customer-list' ),
+            'id'      => 'wpcl_customer_display_name',
+            'default' => 'no',
+            'type'    => 'checkbox',
+            'css'     => 'min-width:300px;',
+            'desc'    => __( 'Enable customer display name column', 'wc-product-customer-list' ),
         );
         $settings_wpcl[] = array(
             'name'    => __( 'Billing first name column', 'wc-product-customer-list' ),
