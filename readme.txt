@@ -3,7 +3,7 @@ Contributors: kokomoweb, freemius
 Tags: woocommerce, customer list, who bought, admin order list, product-specific, export customers to csv, email customers, customer list, customer, list, print, front-end, tickets, shows, courses, customers, shortcode
 Requires at least: 4.0
 Tested up to: 4.9.5
-Stable tag: 2.7.5
+Stable tag: 2.7.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -159,6 +159,9 @@ Many hooks and filters. Documentation coming soon.
 2. The settings page.
 
 == Changelog ==
+
+= 2.7.6 =
+* Fixed unicode character related errors.
 
 = 2.7.5 =
 * Added customer_display_name in shortcode

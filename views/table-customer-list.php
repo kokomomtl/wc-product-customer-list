@@ -2,7 +2,7 @@
 
 /**
  * @package WC_Product_Customer_List
- * @version 2.7.5
+ * @version 2.7.6
  */
 // Load metabox at bottom of product admin screen
 
@@ -15,7 +15,7 @@ if ( !function_exists( 'wpcl_post_meta_boxes_setup' ) ) {
 
 }
 
-// Set metabox defaults
+// Set metabox defaults
 if ( !function_exists( 'wpcl_add_post_meta_boxes' ) ) {
     function wpcl_add_post_meta_boxes()
     {
@@ -36,7 +36,7 @@ if ( !function_exists( 'wpcl_post_class_meta_box' ) ) {
     {
         global  $sitepress, $post, $wpdb ;
         $post_id = $post->ID;
-        // Check for translated products if WPML is activated
+        // Check for translated products if WPML is activated
         
         if ( isset( $sitepress ) ) {
             $trid = $sitepress->get_element_trid( $post_id, 'post_product' );
@@ -47,13 +47,13 @@ if ( !function_exists( 'wpcl_post_class_meta_box' ) ) {
             }
         }
         
-        // Query the orders related to the product
+        // Query the orders related to the product
         $order_statuses = array_map( 'esc_sql', (array) get_option( 'wpcl_order_status_select', array( 'wc-completed' ) ) );
         $order_statuses_string = "'" . implode( "', '", $order_statuses ) . "'";
         $post_id = array_map( 'esc_sql', (array) $post_id );
         $post_string = "'" . implode( "', '", $post_id ) . "'";
         $item_sales = $wpdb->get_results( $wpdb->prepare( "SELECT o.ID as order_id, oi.order_item_id FROM\n\t\t\t{$wpdb->prefix}woocommerce_order_itemmeta oim\n\t\t\tINNER JOIN {$wpdb->prefix}woocommerce_order_items oi\n\t\t\tON oim.order_item_id = oi.order_item_id\n\t\t\tINNER JOIN {$wpdb->posts} o\n\t\t\tON oi.order_id = o.ID\n\t\t\tWHERE oim.meta_key = %s\n\t\t\tAND oim.meta_value IN ( {$post_string} )\n\t\t\tAND o.post_status IN ( {$order_statuses_string} )\n\t\t\tAND o.post_type NOT IN ('shop_order_refund')\n\t\t\tORDER BY o.ID DESC", '_product_id' ) );
-        // Get selected columns from the options page
+        // Get selected columns from the options page
         $product = WC()->product_factory->get_product( $post );
         $columns = array();
         $columns[] = __( 'Email', 'wc-product-customer-list' );
@@ -91,7 +91,7 @@ if ( !function_exists( 'wpcl_post_class_meta_box' ) ) {
             $columns[] = __( 'Billing State', 'wc-product-customer-list' );
         }
         if ( get_option( 'wpcl_billing_postalcode', 'no' ) == 'yes' ) {
-            $columns[] = __( 'Billing Postal Code / Zip', 'wc-product-customer-list' );
+            $columns[] = __( 'Billing Postal Code / Zip', 'wc-product-customer-list' );
         }
         if ( get_option( 'wpcl_billing_country', 'no' ) == 'yes' ) {
             $columns[] = __( 'Billing Country', 'wc-product-customer-list' );
@@ -118,7 +118,7 @@ if ( !function_exists( 'wpcl_post_class_meta_box' ) ) {
             $columns[] = __( 'Shipping State', 'wc-product-customer-list' );
         }
         if ( get_option( 'wpcl_shipping_postalcode', 'no' ) == 'yes' ) {
-            $columns[] = __( 'Shipping Postal Code / Zip', 'wc-product-customer-list' );
+            $columns[] = __( 'Shipping Postal Code / Zip', 'wc-product-customer-list' );
         }
         if ( get_option( 'wpcl_shipping_country', 'no' ) == 'yes' ) {
             $columns[] = __( 'Shipping Country', 'wc-product-customer-list' );
@@ -677,7 +677,6 @@ if ( !function_exists( 'wpcl_post_class_meta_box' ) ) {
                     }
                     
                     ?>
-									
 									<?php 
                     
                     if ( get_option( 'wpcl_variations', 'yes' ) == 'yes' ) {
@@ -748,9 +747,9 @@ if ( !function_exists( 'wpcl_post_class_meta_box' ) ) {
                     }
                 }
                 
-                // End partial refund check
+                // End partial refund check
             }
-            // End foreach
+            // End foreach
             $email_list = implode( ',', array_unique( $email_list ) );
             ?>
 					</tbody>

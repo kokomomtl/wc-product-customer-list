@@ -242,12 +242,12 @@ function wpcl_all_settings( $settings, $current_section )
             'desc'    => __( 'Enable billing state column', 'wc-product-customer-list' ),
         );
         $settings_wpcl[] = array(
-            'name'    => __( 'Billing Postal Code / Zip column', 'wc-product-customer-list' ),
+            'name'    => __( 'Billing Postal Code / Zip column', 'wc-product-customer-list' ),
             'id'      => 'wpcl_billing_postalcode',
             'default' => 'no',
             'type'    => 'checkbox',
             'css'     => 'min-width:300px;',
-            'desc'    => __( 'Enable billing postal code / Zip column', 'wc-product-customer-list' ),
+            'desc'    => __( 'Enable billing postal code / Zip column', 'wc-product-customer-list' ),
         );
         $settings_wpcl[] = array(
             'name'    => __( 'Billing country column', 'wc-product-customer-list' ),
@@ -314,12 +314,12 @@ function wpcl_all_settings( $settings, $current_section )
             'desc'    => __( 'Enable shipping state column', 'wc-product-customer-list' ),
         );
         $settings_wpcl[] = array(
-            'name'    => __( 'Shipping Postal Code / Zip column', 'wc-product-customer-list' ),
+            'name'    => __( 'Shipping Postal Code / Zip column', 'wc-product-customer-list' ),
             'id'      => 'wpcl_shipping_postalcode',
             'default' => 'no',
             'type'    => 'checkbox',
             'css'     => 'min-width:300px;',
-            'desc'    => __( 'Enable shipping postal code / Zip column', 'wc-product-customer-list' ),
+            'desc'    => __( 'Enable shipping postal code / Zip column', 'wc-product-customer-list' ),
         );
         $settings_wpcl[] = array(
             'name'    => __( 'Shipping country column', 'wc-product-customer-list' ),

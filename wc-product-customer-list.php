@@ -4,7 +4,7 @@
 Plugin Name: Product Customer List for WooCommerce
 Plugin URI: https://wordpress.org/plugins/wc-product-customer-list/
 Description: Displays a list of customers that bought a product on the edit page.
-Version: 2.7.5
+Version: 2.7.6
 Author: Kokomo
 Author URI: http://www.kokomoweb.com/
 Developer: Thierry Lavergne
@@ -19,7 +19,7 @@ WC tested up to: 3.4.3
 */
 /**
  * @package WC_Product_Customer_List
- * @version 2.7.5
+ * @version 2.7.6
  */
 // Prevent direct access
 
@@ -94,26 +94,26 @@ if ( !function_exists( 'wpcl_activation' ) ) {
     // Init
     function wpcl_init()
     {
-        // Init functions
+        // Init functions
         require_once WPCL_PLUGIN_PATH . 'functions.php';
-        // Check if WooCommerce is activated
+        // Check if WooCommerce is activated
         
         if ( class_exists( 'woocommerce' ) ) {
-            // Add row action
+            // Add row action
             require_once WPCL_PLUGIN_PATH . 'admin/wpcl-row-actions.php';
-            // Woocommerce Settings
+            // Woocommerce Settings
             require_once WPCL_PLUGIN_PATH . 'admin/wpcl-settings.php';
             // Enqueue stylesheets and scripts on post edit page only
             require_once WPCL_PLUGIN_PATH . 'admin/wpcl-scripts.php';
             // Display customer table in product edit page
             
             if ( woocommerce_version_check() ) {
-                // 3.0+ customer table
+                // 3.0+ customer table
                 require_once WPCL_PLUGIN_PATH . 'views/table-customer-list.php';
                 // 3.0+ shortcode
                 require_once WPCL_PLUGIN_PATH . 'views/shortcodes.php';
             } else {
-                // Pre 3.0 customer table
+                // Pre 3.0 customer table
                 require_once WPCL_PLUGIN_PATH . 'views/legacy/table-customer-list-2-6.php';
                 // Pre 3.0 Shortcode
                 require_once WPCL_PLUGIN_PATH . 'views/legacy/shortcodes-2-6.php';
