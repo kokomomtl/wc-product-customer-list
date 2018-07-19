@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WC_Product_Customer_List
- * @version 2.6.6
+ * @version 2.7.7
  */
 
 if( ! function_exists('wpcl_enqueue_scripts') ) {
@@ -11,12 +11,12 @@ if( ! function_exists('wpcl_enqueue_scripts') ) {
 			return;
 		}
 		wp_register_style( 'wpcl-admin-css', plugin_dir_url( __FILE__ ) . 'assets/admin.css', false, '2.3.1' );
-		
-		wp_register_style( 'wpcl-datatables-css', 'https://cdn.datatables.net/t/dt/dt-1.10.11,r-2.0.2/datatables.min.css', false, '1.10.11' );
+
+		wp_register_style( 'wpcl-datatables-css', 'https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css', false, '1.10.18' );
 		wp_register_style( 'wpcl-datatables-buttons-css', 'https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css', false, '1.2.2' );
 		wp_register_style( 'wpcl-datatables-select-css', 'https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css', false, '1.0' );
 
-		wp_register_script( 'wpcl-datatables-js', 'https://cdn.datatables.net/t/dt/dt-1.10.11,r-2.0.2/datatables.min.js', true, '2.0.2' );
+		wp_register_script( 'wpcl-datatables-js', 'https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js', true, '1.10.18' );
 		wp_register_script( 'wpcl-datatables-buttons-js', 'https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js', true, '1.2.2' );
 		wp_register_script( 'wpcl-datatables-buttons-flash', 'https://cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js', true, '1.2.2' );
 		wp_register_script( 'wpcl-datatables-print', 'https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js', true, '1.2.2' );
@@ -32,7 +32,6 @@ if( ! function_exists('wpcl_enqueue_scripts') ) {
 		wp_enqueue_style( 'wpcl-admin-css' );
 		wp_enqueue_style( 'wpcl-datatables-css' );
 		wp_enqueue_style( 'wpcl-datatables-buttons-css' );
-		
 		wp_enqueue_style( 'wpcl-datatables-select-css' );
 
 		wp_enqueue_script( 'wpcl-datatables-js');
@@ -68,7 +67,10 @@ if( ! function_exists('wpcl_enqueue_scripts') ) {
 			'pdfOrientation'		=> get_option( 'wpcl_export_pdf_orientation', 'portrait' ),
 			'resetColumn'			=> __('Reset column order', 'wc-product-customer-list'),
 			'lengthMenuAll'			=> __('All', 'wc-product-customer-list'),
-			'info'					=> __('Showing _START_ to _END_ of _TOTAL_ entries', 'wc-product-customer-list')
+			'info'					=> __('Showing _START_ to _END_ of _TOTAL_ entries', 'wc-product-customer-list'),
+			'columnOrderIndex'		=> get_option('wpcl_column_order_index', 0),
+			'columnOrderDirection'	=> get_option('wpcl_column_order_direction', 'asc'),
+			'stateSave'				=> get_option('wpcl_state_save', 'yes')
 		));
 	}
 	add_action( 'admin_enqueue_scripts', 'wpcl_enqueue_scripts' );

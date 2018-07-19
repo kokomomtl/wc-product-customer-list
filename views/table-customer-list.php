@@ -2,7 +2,7 @@
 
 /**
  * @package WC_Product_Customer_List
- * @version 2.7.6
+ * @version 2.7.7
  */
 // Load metabox at bottom of product admin screen
 
@@ -35,7 +35,15 @@ if ( !function_exists( 'wpcl_post_class_meta_box' ) ) {
     function wpcl_post_class_meta_box( $object, $box )
     {
         global  $sitepress, $post, $wpdb ;
-        $post_id = $post->ID;
+        // Get product ID
+        
+        if ( !function_exists( 'yith_wcp_premium_init' ) ) {
+            $post_id = $post->ID;
+        } else {
+            // Fix for YITH Composite Products Premium Bug
+            $post_id = intval( $_GET['post'] );
+        }
+        
         // Check for translated products if WPML is activated
         
         if ( isset( $sitepress ) ) {
@@ -56,7 +64,6 @@ if ( !function_exists( 'wpcl_post_class_meta_box' ) ) {
         // Get selected columns from the options page
         $product = WC()->product_factory->get_product( $post );
         $columns = array();
-        $columns[] = __( 'Email', 'wc-product-customer-list' );
         if ( get_option( 'wpcl_order_number', 'yes' ) == 'yes' ) {
             $columns[] = __( 'Order', 'wc-product-customer-list' );
         }
@@ -207,12 +214,9 @@ if ( !function_exists( 'wpcl_post_class_meta_box' ) ) {
                     // Order has been partially refunded
                 } else {
                     ?>
-								<tr>
-									<td class="email">
-										<?php 
+								<tr data-email="<?php 
                     echo  $order->get_billing_email() ;
-                    ?>
-									</td>
+                    ?>">
 									<?php 
                     
                     if ( get_option( 'wpcl_order_number', 'yes' ) == 'yes' ) {

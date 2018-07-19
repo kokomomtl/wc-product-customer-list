@@ -2,8 +2,8 @@
 Contributors: kokomoweb, freemius
 Tags: woocommerce, customer list, who bought, admin order list, product-specific, export customers to csv, email customers, customer list, customer, list, print, front-end, tickets, shows, courses, customers, shortcode
 Requires at least: 4.0
-Tested up to: 4.9.5
-Stable tag: 2.7.6
+Tested up to: 4.9.7
+Stable tag: 2.7.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,7 @@ Great for sending out e-mails or getting a list of customers for courses, for sh
 * Support for YITH WooCommerce Product Add-ons
 * Shortcode by variation ID
 * Datatables functionalities for the shortcode (export PDF, export CSV, print, email customers, search, paging, etc...).
+* Change default sorting column
 * Much more coming soon!
 
 To upgrade the plugin to the premium version, simply click on "upgrade" under the plugin title in the plugin list page, or [purchase it here](https://checkout.freemius.com/mode/dialog/plugin/2009/plan/2994/).
@@ -159,6 +160,14 @@ Many hooks and filters. Documentation coming soon.
 2. The settings page.
 
 == Changelog ==
+
+= 2.7.7 =
+* Updated datatables to latest version
+* Simplified the customer email selection
+* Updated .pot file
+* Updated freemius to the latest version
+* Added setting to select the default column to order by (Pro)
+* Added setting to enable/disable state save (Pro).
 
 = 2.7.6 =
 * Fixed unicode character related errors.

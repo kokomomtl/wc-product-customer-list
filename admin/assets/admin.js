@@ -3,17 +3,24 @@ jQuery(document).ready(function($) {
 	var pdfOrientation = wpcl_script_vars.pdfOrientation;
 	var pdfPageSize = wpcl_script_vars.pdfPagesize;
 	var fileName = productTitle.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-');
+	var columnOrderIndex = parseInt(wpcl_script_vars.columnOrderIndex);
+	var columnOrderDirection = wpcl_script_vars.columnOrderDirection;
+	if(wpcl_script_vars.stateSave == 'yes') {
+		var optionStateSave = true;
+	} else {
+		var optionStateSave = false;
+	}
 
 	var table = $('.wpcl #list-table').DataTable( {
 
 		columnDefs: [
-	        { targets: [0], visible: false},
-	        { targets: '_all', visible: true }
+	        //{ targets: [0], visible: false},
+	        //{ targets: '_all', visible: true }
     	],
 		colReorder: true,
-		stateSave:  true,
-  		stateLoadParams: function (settings, data) {  data.columns['0'].visible = false; },
-
+		stateSave:  optionStateSave,
+  		//stateLoadParams: function (settings, data) {  data.columns['0'].visible = false; },
+  		order: [[columnOrderIndex, columnOrderDirection]],
 		select: true,
 		lengthMenu: [[10, 25, 50, -1], [10, 25, 50, wpcl_script_vars.lengthMenuAll]],
 		dom: 'Blfrtip',
@@ -45,7 +52,7 @@ jQuery(document).ready(function($) {
 					$(win.document.body).find( 'table td' )
 						.css( 'border', '1px solid #dfdfdf' )
 						.css( 'padding', '8px' );
-												
+
 					$(win.document.body).find( 'table tr:nth-child(even)' )
 						.css( 'background-color', '#f9f9f9' );
 				}
@@ -119,8 +126,8 @@ jQuery(document).ready(function($) {
 		//event.preventDefault();
 	});
 	table.on( 'select', function ( e, dt, type, indexes ) {
-		var emails = $.map(table.rows('.selected').data(), function (item) {
-			return item[0];
+		var emails = $.map(table.rows('.selected').nodes(), function (item) {
+			return $(item).data('email');
 		});
 		var emailBcc = emails.join(",");
 		$('#email-selected').attr('href', 'mailto:?bcc=' + emailBcc);
@@ -131,8 +138,8 @@ jQuery(document).ready(function($) {
 
 	// Update email list on row deselection
 	table.on( 'deselect', function ( e, dt, type, indexes ) {
-		var emails = $.map(table.rows('.selected').data(), function (item) {
-			return item[0];
+		var emails = $.map(table.rows('.selected').nodes(), function (item) {
+			return $(item).data('email');
 		});
 		var emailBcc = emails.join(",");
 		$('#email-selected').attr('href', 'mailto:?bcc=' + emailBcc);

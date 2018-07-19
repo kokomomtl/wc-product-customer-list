@@ -2,7 +2,7 @@
 
 /**
  * @package WC_Product_Customer_List
- * @version 2.7.5
+ * @version 2.7.7
  */
 function wpcl_add_section( $sections )
 {
