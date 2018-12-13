@@ -2,7 +2,7 @@
 
 /**
  * @package WC_Product_Customer_List
- * @version 2.7.7
+ * @version 2.7.9
  */
 // Display cell
 if ( !function_exists( 'wpcl_display_cell' ) ) {
@@ -100,9 +100,13 @@ if ( !function_exists( 'wpcl_post_class_meta_box' ) ) {
             $post_id = intval( $_GET['post'] );
         }
         
+        
         if ( get_option( 'wpcl_split_rows' ) == 'yes' ) {
             $split_rows = 'true';
+        } else {
+            $split_rows = 'false';
         }
+        
         //$split_rows = ! empty( $_REQUEST['wpcl_split_rows'] ) && $_REQUEST['wpcl_split_rows'] == 'true';
         $all_information = wpcl_gather_data( $post_id, $split_rows );
         ?>

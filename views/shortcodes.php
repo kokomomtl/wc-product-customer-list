@@ -2,7 +2,7 @@
 
 /**
  * @package WC_Product_Customer_List
- * @version 2.7.5
+ * @version 2.7.9
  */
 
 if ( !defined( 'ABSPATH' ) ) {
@@ -67,6 +67,7 @@ function wpcl_shortcode( $atts )
         'order_qty_total_column' => 'false',
         'limit'                  => 9999,
         'custom_fields'          => NULL,
+        'index'                  => 'false',
         'sortable'               => 'false',
         'export_pdf'             => 'false',
         'export_csv'             => 'false',
@@ -294,6 +295,8 @@ function wpcl_shortcode( $atts )
         ?>>
 					<tr>
 						<?php 
+        ?>
+						<?php 
         foreach ( $columns as $column ) {
             ?>
 						<th>
@@ -332,6 +335,8 @@ function wpcl_shortcode( $atts )
             } else {
                 ?>
 							<tr>
+								<?php 
+                ?>
 								<?php 
                 
                 if ( $order_number == 'true' ) {
@@ -844,19 +849,7 @@ function wpcl_shortcode( $atts )
         }
         
         ?>
-
 		<?php 
-        
-        if ( $email_all == 'true' ) {
-            ?>
-			<a href="mailto:?bcc=<?php 
-            echo  $email_list ;
-            ?>" class="button"><?php 
-            _e( 'Email all customers', 'wc-product-customer-list' );
-            ?></a>
-		<?php 
-        }
-        
         ?>
 
 		<?php 

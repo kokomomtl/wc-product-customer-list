@@ -4,7 +4,7 @@
 Plugin Name: Product Customer List for WooCommerce
 Plugin URI: https://wordpress.org/plugins/wc-product-customer-list/
 Description: Displays a list of customers that bought a product on the edit page.
-Version: 2.7.8
+Version: 2.7.9
 Author: Kokomo
 Author URI: http://www.kokomoweb.com/
 Developer: Thierry Lavergne
@@ -14,18 +14,24 @@ Domain Path: /languages
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 WC requires at least: 3.0.0
-WC tested up to: 3.5.0
+WC tested up to: 3.5.2
 @fs_premium_only /admin/wpcl-scripts-shortcode.php, /admin/assets/shortcode.js
 */
 /**
  * @package WC_Product_Customer_List
- * @version 2.7.6
+ * @version 2.7.9
  */
 // Prevent direct access
 
 if ( !defined( 'ABSPATH' ) ) {
     exit;
     // Exit if accessed directly
+}
+
+
+if ( function_exists( 'wpcl_activation' ) ) {
+    wpcl_activation()->set_basename( false, __FILE__ );
+    return;
 }
 
 
@@ -44,6 +50,7 @@ if ( !function_exists( 'wpcl_activation' ) ) {
                 'type'           => 'plugin',
                 'public_key'     => 'pk_680750999c75010124cc910626309',
                 'is_premium'     => false,
+                'premium_suffix' => 'Premium',
                 'has_addons'     => false,
                 'has_paid_plans' => true,
                 'menu'           => array(
