@@ -2,7 +2,7 @@
 
 /**
  * @package WC_Product_Customer_List
- * @version 2.7.9
+ * @version 2.8.0
  */
 // Display cell
 if ( !function_exists( 'wpcl_display_cell' ) ) {
@@ -141,7 +141,9 @@ if ( !function_exists( 'wpcl_post_class_meta_box' ) ) {
 					<?php 
             foreach ( $all_information['data'] as $data_row ) {
                 ?>
-						<tr>
+						<tr data-email="<?php 
+                echo  $data_row['billing_email'] ;
+                ?>">
 							<?php 
                 foreach ( $all_information['columns'] as $column_key => $column_name ) {
                     

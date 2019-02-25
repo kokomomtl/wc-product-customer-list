@@ -1,9 +1,9 @@
 === Product Customer List for WooCommerce ===
-Contributors: kokomoweb, freemius
+Contributors: kokomoweb
 Tags: woocommerce, customer list, who bought, admin order list, product-specific, export customers to csv, email customers, customer list, customer, list, print, front-end, tickets, shows, courses, customers, shortcode
 Requires at least: 4.0
-Tested up to: 5.0.1
-Stable tag: 2.7.9
+Tested up to: 5.1
+Stable tag: 2.8.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,7 +53,7 @@ Great for sending out e-mails or getting a list of customers for courses, for sh
 
 To upgrade the plugin to the premium version, simply click on "upgrade" under the plugin title in the plugin list page, or [purchase it here](https://checkout.freemius.com/mode/dialog/plugin/2009/plan/2994/).
 
-= Contributors: =, freemius
+= Contributors: =
 * Support for variable products: [Alexandre Simard](https://profiles.wordpress.org/brocheafoin/)
 * Dutch translation: [pieterclaesen](https://wordpress.org/support/profile/pieterclaesen)
 * Portuguese (Brazil) translation: [Marcello Ruoppolo](https://profiles.wordpress.org/mragenciadigital)
@@ -162,6 +162,11 @@ Many hooks and filters. Documentation coming soon.
 2. The settings page.
 
 == Changelog ==
+
+= 2.8.0 =
+* Fixed issue with Wootours/Wooevents (premium)
+* Fixed issue emailing all customers
+* Security fix
 
 = 2.7.9 =
 * Fixed "Undefined variable: split_rows" PHP notice
