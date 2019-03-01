@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Product Customer List for WooCommerce (Premium)\n"
-"POT-Creation-Date: 2018-10-24 19:04-0400\n"
-"PO-Revision-Date: 2018-10-24 19:05-0400\n"
+"POT-Creation-Date: 2019-03-01 16:38-0500\n"
+"PO-Revision-Date: 2019-03-01 16:40-0500\n"
 "Last-Translator: \n"
 "Language-Team: https://www.kokomoweb.com\n"
 "Language: fr\n"
@@ -12,80 +12,80 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 2.2.1\n"
 
 #: admin/wpcl-row-actions.php:11
 msgid "Customers"
 msgstr "Clients"
 
-#: admin/wpcl-scripts.php:51 views/shortcodes.php:155
+#: admin/wpcl-scripts.php:53 views/shortcodes.php:157
 msgid "Copy"
 msgstr "Copier"
 
-#: admin/wpcl-scripts.php:52 views/shortcodes.php:156
+#: admin/wpcl-scripts.php:54 views/shortcodes.php:158
 msgid "Print"
 msgstr "Imprimer"
 
-#: admin/wpcl-scripts.php:53 views/shortcodes.php:157
+#: admin/wpcl-scripts.php:55 views/shortcodes.php:159
 msgid "Search"
 msgstr "Rerchercher"
 
-#: admin/wpcl-scripts.php:54 views/legacy/table-customer-list-2-6.php:348
-#: views/shortcodes.php:158 views/shortcodes.php:635
-#: views/table-customer-list.php:180
+#: admin/wpcl-scripts.php:56 views/legacy/table-customer-list-2-6.php:348
+#: views/shortcodes.php:160 views/shortcodes.php:649
+#: views/table-customer-list.php:182
 msgid "This product currently has no customers"
 msgstr "Ce produit ne dispose actuellement d’aucun client"
 
-#: admin/wpcl-scripts.php:55 views/shortcodes.php:159
+#: admin/wpcl-scripts.php:57 views/shortcodes.php:161
 msgid "No orders match your search"
 msgstr "Aucune commande ne correspond à votre recherche"
 
-#: admin/wpcl-scripts.php:56 views/shortcodes.php:160
+#: admin/wpcl-scripts.php:58 views/shortcodes.php:162
 msgid "Showing _START_ to _END_ out of _TOTAL_ orders"
 msgstr "Liste de _START_ à _END_ sur _TOTAL_ commandes"
 
-#: admin/wpcl-scripts.php:57 views/shortcodes.php:161
+#: admin/wpcl-scripts.php:59 views/shortcodes.php:163
 msgid "Show _MENU_ orders"
 msgstr "Afficher _MENU_ commandes"
 
-#: admin/wpcl-scripts.php:58 views/shortcodes.php:162
+#: admin/wpcl-scripts.php:60 views/shortcodes.php:164
 msgid "Copy to clipboard"
 msgstr "Copier dans le presse-papier"
 
-#: admin/wpcl-scripts.php:59 views/shortcodes.php:163
+#: admin/wpcl-scripts.php:61 views/shortcodes.php:165
 #, php-format
 msgid "Copied %d rows"
 msgstr "Copié %d rangées"
 
-#: admin/wpcl-scripts.php:60 views/shortcodes.php:164
+#: admin/wpcl-scripts.php:62 views/shortcodes.php:166
 msgid "Copied 1 row"
 msgstr "Copié 1 rangée"
 
-#: admin/wpcl-scripts.php:61 views/shortcodes.php:165
+#: admin/wpcl-scripts.php:63 views/shortcodes.php:167
 msgid "First"
 msgstr "Début"
 
-#: admin/wpcl-scripts.php:62 views/shortcodes.php:166
+#: admin/wpcl-scripts.php:64 views/shortcodes.php:168
 msgid "Previous"
 msgstr "Préc."
 
-#: admin/wpcl-scripts.php:63 views/shortcodes.php:167
+#: admin/wpcl-scripts.php:65 views/shortcodes.php:169
 msgid "Next"
 msgstr "Suiv"
 
-#: admin/wpcl-scripts.php:64 views/shortcodes.php:168
+#: admin/wpcl-scripts.php:66 views/shortcodes.php:170
 msgid "Last"
 msgstr "Nom"
 
-#: admin/wpcl-scripts.php:68 views/shortcodes.php:172
+#: admin/wpcl-scripts.php:70 views/shortcodes.php:174
 msgid "Reset column order"
 msgstr "Réinitialisation de l'ordre des colonnes"
 
-#: admin/wpcl-scripts.php:69 views/shortcodes.php:173
+#: admin/wpcl-scripts.php:71 views/shortcodes.php:175
 msgid "All"
 msgstr "Tous"
 
-#: admin/wpcl-scripts.php:70 views/shortcodes.php:174
+#: admin/wpcl-scripts.php:72 views/shortcodes.php:176
 msgid "Showing _START_ to _END_ of _TOTAL_ entries"
 msgstr "Affichage de _START_ à _END_ sur _TOTAL_ clients"
 
@@ -207,7 +207,7 @@ msgid "Enable customer message column"
 msgstr "Activer colonne note du client"
 
 #: admin/wpcl-settings.php:228 views/legacy/table-customer-list-2-6.php:96
-#: views/shortcodes.php:306 views/table-customer-list.php:342
+#: views/shortcodes.php:309 views/table-customer-list.php:344
 msgid "Customer ID"
 msgstr "ID client"
 
@@ -215,8 +215,8 @@ msgstr "ID client"
 msgid "Enable customer ID column"
 msgstr "Activer colonne ID client"
 
-#: admin/wpcl-settings.php:236 views/shortcodes.php:307
-#: views/table-customer-list.php:346
+#: admin/wpcl-settings.php:236 views/shortcodes.php:310
+#: views/table-customer-list.php:348
 msgid "Customer username"
 msgstr "Nom d'utilisateur"
 
@@ -224,7 +224,7 @@ msgstr "Nom d'utilisateur"
 msgid "Enable customer username column"
 msgstr "Activer colonne nom d'utilisateur"
 
-#: admin/wpcl-settings.php:244 views/table-customer-list.php:350
+#: admin/wpcl-settings.php:244 views/table-customer-list.php:352
 msgid "Customer display name"
 msgstr "Nom d'affichage utilisateur"
 
@@ -393,61 +393,69 @@ msgid "Enable shipping country column"
 msgstr "Activer colonne pays (livraison)"
 
 #: admin/wpcl-settings.php:412
+msgid "Add SKU to PDF title"
+msgstr "Ajouter SKU au titre PDF"
+
+#: admin/wpcl-settings.php:417
+msgid "Enable SKU in PDF title"
+msgstr "Activer SKU dans le titre PDF"
+
+#: admin/wpcl-settings.php:420
 msgid "PDF orientation"
 msgstr "Orientation du PDF"
 
-#: admin/wpcl-settings.php:418
+#: admin/wpcl-settings.php:426
 msgid "Portrait"
 msgstr "Portrait"
 
-#: admin/wpcl-settings.php:419
+#: admin/wpcl-settings.php:427
 msgid "Landscape"
 msgstr "Paysage"
 
-#: admin/wpcl-settings.php:424
+#: admin/wpcl-settings.php:432
 msgid "PDF page size"
 msgstr "Dimension de la page PDF"
 
-#: admin/wpcl-settings.php:430
+#: admin/wpcl-settings.php:438
 msgid "US Letter"
 msgstr "Lettre"
 
-#: admin/wpcl-settings.php:431
+#: admin/wpcl-settings.php:439
 msgid "US Legal"
 msgstr "Légal"
 
-#: admin/wpcl-settings.php:432
+#: admin/wpcl-settings.php:440
 msgid "A3"
 msgstr "A3"
 
-#: admin/wpcl-settings.php:433
+#: admin/wpcl-settings.php:441
 msgid "A4"
 msgstr "A4"
 
-#: admin/wpcl-settings.php:434
+#: admin/wpcl-settings.php:442
 msgid "A5"
 msgstr "A5"
 
-#: admin/wpcl-settings.php:445
+#: admin/wpcl-settings.php:453
 msgid "Product Customer List for WooCommerce Premium"
 msgstr "Liste de clients par produit pour WooCommerce Premium"
 
-#: admin/wpcl-settings.php:450
+#: admin/wpcl-settings.php:458
 msgid "Checkout custom fields"
 msgstr "Champs personnalisés de la Commande"
 
-#: admin/wpcl-settings.php:451 admin/wpcl-settings.php:475
-#: admin/wpcl-settings.php:516 admin/wpcl-settings.php:528
+#: admin/wpcl-settings.php:459 admin/wpcl-settings.php:483
+#: admin/wpcl-settings.php:524 admin/wpcl-settings.php:536
 msgid "Select one or multiple custom fields to display in the table."
 msgstr ""
 "Sélectionner une ou plusieurs statuts de commandes pour lesquelles vous "
 "désirez afficher les clients."
 
-#: admin/wpcl-settings.php:462
+#: admin/wpcl-settings.php:470
 msgid "Index of column for default order"
 msgstr "Index de la colonne pour l’ordre par défaut"
 
-#: admin/wpcl-settings.php:463
+#: admin/wpcl-settings.php:471
 msgid ""
 "Select which column index the data should be sorted by (Numbers only, 0 = "
 "first column)"
@@ -455,47 +463,47 @@ msgstr ""
 "Sélectionnez l’index de la colonne pour laquelle les données seront "
 "ordonnées (numéros seulement, 0 = première colonne)"
 
-#: admin/wpcl-settings.php:474
+#: admin/wpcl-settings.php:482
 msgid "Direction of default order"
 msgstr "Direction de l’ordre par défaut"
 
-#: admin/wpcl-settings.php:481
+#: admin/wpcl-settings.php:489
 msgid "Ascending"
 msgstr "Ascendant"
 
-#: admin/wpcl-settings.php:482
+#: admin/wpcl-settings.php:490
 msgid "Descending"
 msgstr "Descendant"
 
-#: admin/wpcl-settings.php:490
+#: admin/wpcl-settings.php:498
 msgid "State save"
 msgstr "Sauvegarde de l’état"
 
-#: admin/wpcl-settings.php:495
+#: admin/wpcl-settings.php:503
 msgid "Enable state save"
 msgstr "Activer la sauvegarde de l'état"
 
-#: admin/wpcl-settings.php:502
+#: admin/wpcl-settings.php:510
 msgid "WooTours/WooEvents column"
 msgstr "Colonne WooTours/WooEvents"
 
-#: admin/wpcl-settings.php:507
+#: admin/wpcl-settings.php:515
 msgid "Activate WooTours/WooEvents column"
 msgstr "Activer colonne WooTours/WooEvents"
 
-#: admin/wpcl-settings.php:515
+#: admin/wpcl-settings.php:523
 msgid "Product fields (Rightpress)"
 msgstr "Product fields (Rightpress)"
 
-#: admin/wpcl-settings.php:527
+#: admin/wpcl-settings.php:535
 msgid "Checkout fields (Rightpress)"
 msgstr "Checkout fields (Rightpress)"
 
-#: admin/wpcl-settings.php:539
+#: admin/wpcl-settings.php:547
 msgid "Split rows by quantity"
 msgstr "Séparer les rangées par quantité"
 
-#: admin/wpcl-settings.php:544
+#: admin/wpcl-settings.php:552
 msgid "One row per product"
 msgstr "Une rangée par produit"
 
@@ -511,126 +519,126 @@ msgstr ""
 msgid "Customers who bought this product"
 msgstr "Clients ayant acheté ce produit"
 
-#: views/legacy/table-customer-list-2-6.php:75 views/shortcodes.php:283
-#: views/table-customer-list.php:238
+#: views/legacy/table-customer-list-2-6.php:75 views/shortcodes.php:286
+#: views/table-customer-list.php:240
 msgid "Order"
 msgstr "Commande"
 
-#: views/legacy/table-customer-list-2-6.php:76 views/shortcodes.php:284
-#: views/table-customer-list.php:246
+#: views/legacy/table-customer-list-2-6.php:76 views/shortcodes.php:287
+#: views/table-customer-list.php:248
 msgid "Date"
 msgstr "Date"
 
-#: views/legacy/table-customer-list-2-6.php:77 views/shortcodes.php:285
-#: views/table-customer-list.php:254
+#: views/legacy/table-customer-list-2-6.php:77 views/shortcodes.php:288
+#: views/table-customer-list.php:256
 msgid "Billing First name"
 msgstr "Prénom (facturation)"
 
-#: views/legacy/table-customer-list-2-6.php:78 views/shortcodes.php:286
-#: views/table-customer-list.php:262
+#: views/legacy/table-customer-list-2-6.php:78 views/shortcodes.php:289
+#: views/table-customer-list.php:264
 msgid "Billing Last name"
 msgstr "Nom (facturation)"
 
-#: views/legacy/table-customer-list-2-6.php:79 views/shortcodes.php:288
-#: views/table-customer-list.php:270
+#: views/legacy/table-customer-list-2-6.php:79 views/shortcodes.php:291
+#: views/table-customer-list.php:272
 msgid "Billing E-mail"
 msgstr "E-mail (facturation)"
 
-#: views/legacy/table-customer-list-2-6.php:80 views/shortcodes.php:289
-#: views/table-customer-list.php:274
+#: views/legacy/table-customer-list-2-6.php:80 views/shortcodes.php:292
+#: views/table-customer-list.php:276
 msgid "Billing Phone"
 msgstr "Téléphone (facturation)"
 
-#: views/legacy/table-customer-list-2-6.php:81 views/shortcodes.php:290
-#: views/table-customer-list.php:278
+#: views/legacy/table-customer-list-2-6.php:81 views/shortcodes.php:293
+#: views/table-customer-list.php:280
 msgid "Billing Address 1"
 msgstr "Adresse 1 (facturation)"
 
-#: views/legacy/table-customer-list-2-6.php:82 views/shortcodes.php:291
-#: views/table-customer-list.php:282
+#: views/legacy/table-customer-list-2-6.php:82 views/shortcodes.php:294
+#: views/table-customer-list.php:284
 msgid "Billing Address 2"
 msgstr "Adresse 2 (facturation)"
 
-#: views/legacy/table-customer-list-2-6.php:83 views/shortcodes.php:292
-#: views/table-customer-list.php:286
+#: views/legacy/table-customer-list-2-6.php:83 views/shortcodes.php:295
+#: views/table-customer-list.php:288
 msgid "Billing City"
 msgstr "Ville (facturation)"
 
-#: views/legacy/table-customer-list-2-6.php:84 views/shortcodes.php:293
-#: views/table-customer-list.php:290
+#: views/legacy/table-customer-list-2-6.php:84 views/shortcodes.php:296
+#: views/table-customer-list.php:292
 msgid "Billing State"
 msgstr "État (facturation)"
 
-#: views/legacy/table-customer-list-2-6.php:85 views/shortcodes.php:294
+#: views/legacy/table-customer-list-2-6.php:85 views/shortcodes.php:297
 msgid "Billing Postal Code / Zip"
 msgstr "Code postal / Zip (facturation)"
 
-#: views/legacy/table-customer-list-2-6.php:86 views/shortcodes.php:295
-#: views/table-customer-list.php:298
+#: views/legacy/table-customer-list-2-6.php:86 views/shortcodes.php:298
+#: views/table-customer-list.php:300
 msgid "Billing Country"
 msgstr "Pays (facturation)"
 
-#: views/legacy/table-customer-list-2-6.php:87 views/shortcodes.php:296
-#: views/table-customer-list.php:302
+#: views/legacy/table-customer-list-2-6.php:87 views/shortcodes.php:299
+#: views/table-customer-list.php:304
 msgid "Shipping First name"
 msgstr "Prénom (facturation)"
 
-#: views/legacy/table-customer-list-2-6.php:88 views/shortcodes.php:297
-#: views/table-customer-list.php:306
+#: views/legacy/table-customer-list-2-6.php:88 views/shortcodes.php:300
+#: views/table-customer-list.php:308
 msgid "Shipping Last name"
 msgstr "Nom (facturation)"
 
-#: views/legacy/table-customer-list-2-6.php:89 views/shortcodes.php:299
-#: views/table-customer-list.php:314
+#: views/legacy/table-customer-list-2-6.php:89 views/shortcodes.php:302
+#: views/table-customer-list.php:316
 msgid "Shipping Address 1"
 msgstr "Adresse 1 (livraison)"
 
-#: views/legacy/table-customer-list-2-6.php:90 views/shortcodes.php:300
-#: views/table-customer-list.php:318
+#: views/legacy/table-customer-list-2-6.php:90 views/shortcodes.php:303
+#: views/table-customer-list.php:320
 msgid "Shipping Address 2"
 msgstr "Adresse 2 (livraison)"
 
-#: views/legacy/table-customer-list-2-6.php:91 views/shortcodes.php:301
-#: views/table-customer-list.php:322
+#: views/legacy/table-customer-list-2-6.php:91 views/shortcodes.php:304
+#: views/table-customer-list.php:324
 msgid "Shipping City"
 msgstr "Ville (livraison)"
 
-#: views/legacy/table-customer-list-2-6.php:92 views/shortcodes.php:302
-#: views/table-customer-list.php:326
+#: views/legacy/table-customer-list-2-6.php:92 views/shortcodes.php:305
+#: views/table-customer-list.php:328
 msgid "Shipping State"
 msgstr "État (livraison)"
 
-#: views/legacy/table-customer-list-2-6.php:93 views/shortcodes.php:303
+#: views/legacy/table-customer-list-2-6.php:93 views/shortcodes.php:306
 msgid "Shipping Postal Code / Zip"
 msgstr "Code postal / Zip (livraison)"
 
-#: views/legacy/table-customer-list-2-6.php:94 views/shortcodes.php:304
-#: views/table-customer-list.php:334
+#: views/legacy/table-customer-list-2-6.php:94 views/shortcodes.php:307
+#: views/table-customer-list.php:336
 msgid "Shipping Country"
 msgstr "Pays (livraison)"
 
-#: views/legacy/table-customer-list-2-6.php:95 views/shortcodes.php:305
-#: views/table-customer-list.php:338
+#: views/legacy/table-customer-list-2-6.php:95 views/shortcodes.php:308
+#: views/table-customer-list.php:340
 msgid "Customer Message"
 msgstr "Message du client"
 
-#: views/legacy/table-customer-list-2-6.php:97 views/shortcodes.php:309
-#: views/table-customer-list.php:354
+#: views/legacy/table-customer-list-2-6.php:97 views/shortcodes.php:312
+#: views/table-customer-list.php:356
 msgid "Order Status"
 msgstr "Etat de la commande"
 
-#: views/legacy/table-customer-list-2-6.php:98 views/shortcodes.php:310
-#: views/table-customer-list.php:358
+#: views/legacy/table-customer-list-2-6.php:98 views/shortcodes.php:313
+#: views/table-customer-list.php:360
 msgid "Payment method"
 msgstr "Méthode de paiement"
 
-#: views/legacy/table-customer-list-2-6.php:99 views/shortcodes.php:313
-#: views/table-customer-list.php:370
+#: views/legacy/table-customer-list-2-6.php:99 views/shortcodes.php:316
+#: views/table-customer-list.php:372
 msgid "Variation"
 msgstr "Variation"
 
-#: views/legacy/table-customer-list-2-6.php:100 views/shortcodes.php:316
-#: views/table-customer-list.php:378
+#: views/legacy/table-customer-list-2-6.php:100 views/shortcodes.php:319
+#: views/table-customer-list.php:380
 msgid "Qty"
 msgstr "Quantité"
 
@@ -638,69 +646,69 @@ msgstr "Quantité"
 msgid "Variation no longer exists"
 msgstr "Cette variation n'existe plus"
 
-#: views/legacy/table-customer-list-2-6.php:342 views/shortcodes.php:622
-#: views/table-customer-list.php:161
+#: views/legacy/table-customer-list-2-6.php:342 views/shortcodes.php:635
+#: views/table-customer-list.php:163
 msgid "Total"
 msgstr "Total"
 
-#: views/legacy/table-customer-list-2-6.php:345 views/shortcodes.php:627
-#: views/table-customer-list.php:164
+#: views/legacy/table-customer-list-2-6.php:345 views/shortcodes.php:640
+#: views/table-customer-list.php:166
 msgid "Email all customers"
 msgstr "Envoyez un e-mail à tous"
 
-#: views/shortcodes.php:287 views/table-customer-list.php:266
+#: views/shortcodes.php:290 views/table-customer-list.php:268
 msgid "Billing Company"
 msgstr "Compagnie (facturation)"
 
-#: views/shortcodes.php:298 views/table-customer-list.php:310
+#: views/shortcodes.php:301 views/table-customer-list.php:312
 msgid "Shipping Company"
 msgstr "Compagnie (livraison)"
 
-#: views/shortcodes.php:308
+#: views/shortcodes.php:311
 msgid "Display Name"
 msgstr "Nom d’affichage"
 
-#: views/shortcodes.php:311 views/table-customer-list.php:362
+#: views/shortcodes.php:314 views/table-customer-list.php:364
 msgid "Shipping method"
 msgstr "Méthode d'expédition"
 
-#: views/shortcodes.php:312 views/table-customer-list.php:366
+#: views/shortcodes.php:315 views/table-customer-list.php:368
 msgid "Coupons used"
 msgstr "Coupons utilisés"
 
-#: views/shortcodes.php:314 views/table-customer-list.php:374
+#: views/shortcodes.php:317 views/table-customer-list.php:376
 msgid "Order total"
 msgstr "Total de la commande"
 
-#: views/shortcodes.php:315
+#: views/shortcodes.php:318
 msgid "Total qty"
 msgstr "Qté totale"
 
-#: views/table-customer-list.php:165
+#: views/table-customer-list.php:167
 msgid "Email selected customers"
 msgstr "Envoyez un courriel aux clients sélectionnés"
 
-#: views/table-customer-list.php:294
+#: views/table-customer-list.php:296
 msgid "Billing Postal Code / Zip"
 msgstr "Code postal / Zip (facturation)"
 
-#: views/table-customer-list.php:330
+#: views/table-customer-list.php:332
 msgid "Shipping Postal Code / Zip"
 msgstr "Code postal / Zip (livraison)"
 
-#: views/table-customer-list.php:403
+#: views/table-customer-list.php:405
 msgid "Attendee information"
 msgstr "Information participants"
 
-#: views/table-customer-list.php:665
+#: views/table-customer-list.php:666
 msgid "User "
 msgstr "Usager "
 
-#: views/table-customer-list.php:667
+#: views/table-customer-list.php:668
 msgid "Name: "
 msgstr "Nom: "
 
-#: views/table-customer-list.php:671
+#: views/table-customer-list.php:672
 msgid "Email: "
 msgstr "Courriel: "
 

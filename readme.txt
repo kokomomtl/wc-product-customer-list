@@ -3,7 +3,7 @@ Contributors: kokomoweb
 Tags: woocommerce, customer list, who bought, admin order list, product-specific, export customers to csv, email customers, customer list, customer, list, print, front-end, tickets, shows, courses, customers, shortcode
 Requires at least: 4.0
 Tested up to: 5.1
-Stable tag: 2.8.0
+Stable tag: 2.8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -162,6 +162,9 @@ Many hooks and filters. Documentation coming soon.
 2. The settings page.
 
 == Changelog ==
+
+= 2.8.1 =
+* Feature: Added option to add SKU to PDF titles
 
 = 2.8.0 =
 * Fixed issue with Wootours/Wooevents (premium)

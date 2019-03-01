@@ -2,7 +2,7 @@
 
 /**
  * @package WC_Product_Customer_List
- * @version 2.7.7
+ * @version 2.8.1
  */
 function wpcl_add_section( $sections )
 {
@@ -328,6 +328,14 @@ function wpcl_all_settings( $settings, $current_section )
             'type'    => 'checkbox',
             'css'     => 'min-width:300px;',
             'desc'    => __( 'Enable shipping country column', 'wc-product-customer-list' ),
+        );
+        $settings_wpcl[] = array(
+            'name'    => __( 'Add SKU to PDF title', 'wc-product-customer-list' ),
+            'id'      => 'wpcl_export_pdf_sku',
+            'default' => 'no',
+            'type'    => 'checkbox',
+            'css'     => 'min-width:300px;',
+            'desc'    => __( 'Enable SKU in PDF title', 'wc-product-customer-list' ),
         );
         $settings_wpcl[] = array(
             'name'     => __( 'PDF orientation', 'wc-product-customer-list' ),

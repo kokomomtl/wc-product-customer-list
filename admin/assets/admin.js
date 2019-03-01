@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+	var productSKU = wpcl_script_vars.productSku;
 	var productTitle = wpcl_script_vars.productTitle;
 	var pdfOrientation = wpcl_script_vars.pdfOrientation;
 	var pdfPageSize = wpcl_script_vars.pdfPagesize;
@@ -9,6 +10,12 @@ jQuery(document).ready(function($) {
 		var optionStateSave = true;
 	} else {
 		var optionStateSave = false;
+	}
+
+	if(wpcl_script_vars.titleSku == 'yes') {
+		var pdfTitle = productTitle + ' (' + productSKU + ')';
+	} else {
+		var pdfTitle = productTitle + 'ss';
 	}
 
 	var table = $('.wpcl #list-table').DataTable( {
@@ -67,7 +74,7 @@ jQuery(document).ready(function($) {
 			},
 			{
 				extend: 'pdfHtml5',
-				title: productTitle,
+				title: pdfTitle,
 				orientation: pdfOrientation,
 				pageSize: pdfPageSize,
 				filename: fileName,

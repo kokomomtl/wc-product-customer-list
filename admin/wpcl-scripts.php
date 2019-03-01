@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WC_Product_Customer_List
- * @version 2.7.7
+ * @version 2.8.1
  */
 
 if( ! function_exists('wpcl_enqueue_scripts') ) {
@@ -10,6 +10,8 @@ if( ! function_exists('wpcl_enqueue_scripts') ) {
   		if ( 'post.php' != $hook || 'product' != get_post_type( $post ) ) {
 			return;
 		}
+		$product_sku = wc_get_product($post->ID)->get_sku();
+
 		wp_register_style( 'wpcl-admin-css', plugin_dir_url( __FILE__ ) . 'assets/admin.css', false, '2.3.1' );
 
 		wp_register_style( 'wpcl-datatables-css', 'https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css', false, '1.10.18' );
@@ -70,7 +72,9 @@ if( ! function_exists('wpcl_enqueue_scripts') ) {
 			'info'					=> __('Showing _START_ to _END_ of _TOTAL_ entries', 'wc-product-customer-list'),
 			'columnOrderIndex'		=> get_option('wpcl_column_order_index', 0),
 			'columnOrderDirection'	=> get_option('wpcl_column_order_direction', 'asc'),
-			'stateSave'				=> get_option('wpcl_state_save', 'yes')
+			'stateSave'				=> get_option('wpcl_state_save', 'yes'),
+			'titleSku'				=> get_option('wpcl_export_pdf_sku', 'no'),
+			'productSku'			=> $product_sku
 		));
 	}
 	add_action( 'admin_enqueue_scripts', 'wpcl_enqueue_scripts' );

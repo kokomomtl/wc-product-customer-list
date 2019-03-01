@@ -2,7 +2,7 @@
 
 /**
  * @package WC_Product_Customer_List
- * @version 2.8.0
+ * @version 2.8.1
  */
 // Display cell
 if ( !function_exists( 'wpcl_display_cell' ) ) {
