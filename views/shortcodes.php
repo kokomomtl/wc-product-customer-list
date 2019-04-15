@@ -67,6 +67,7 @@ function wpcl_shortcode( $atts )
         'order_qty_total_column' => 'false',
         'limit'                  => 9999,
         'custom_fields'          => NULL,
+        'variations'             => NULL,
         'index'                  => 'false',
         'sortable'               => 'false',
         'export_pdf'             => 'false',
@@ -342,9 +343,9 @@ function wpcl_shortcode( $atts )
                 if ( $order_number == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  '<a href="' . admin_url( 'post.php' ) . '?post=' . $sale->order_id . '&action=edit" target="_blank">' . $sale->order_id . '</a>' ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -355,9 +356,9 @@ function wpcl_shortcode( $atts )
                 if ( $order_date == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  date_format( $order->get_date_created(), 'Y-m-d' ) ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -368,9 +369,9 @@ function wpcl_shortcode( $atts )
                 if ( $billing_first_name == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  $order->get_billing_first_name() ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -381,9 +382,9 @@ function wpcl_shortcode( $atts )
                 if ( $billing_last_name == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  $order->get_billing_last_name() ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -394,9 +395,9 @@ function wpcl_shortcode( $atts )
                 if ( $billing_company == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  $order->get_billing_company() ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -407,9 +408,9 @@ function wpcl_shortcode( $atts )
                 if ( $billing_email == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  '<a href="mailto:' . $order->get_billing_email() . '">' . $order->get_billing_email() . '</a>' ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -420,9 +421,9 @@ function wpcl_shortcode( $atts )
                 if ( $billing_phone == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  '<a href="tel:' . $order->get_billing_phone() . '">' . $order->get_billing_phone() . '</a>' ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -433,9 +434,9 @@ function wpcl_shortcode( $atts )
                 if ( $billing_address_1 == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  $order->get_billing_address_1() ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -446,9 +447,9 @@ function wpcl_shortcode( $atts )
                 if ( $billing_address_2 == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  $order->get_billing_address_2() ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -459,9 +460,9 @@ function wpcl_shortcode( $atts )
                 if ( $billing_city == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  $order->get_billing_city() ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -472,9 +473,9 @@ function wpcl_shortcode( $atts )
                 if ( $billing_state == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  $order->get_billing_state() ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -485,9 +486,9 @@ function wpcl_shortcode( $atts )
                 if ( $billing_postalcode == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  $order->get_billing_postcode() ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -498,9 +499,9 @@ function wpcl_shortcode( $atts )
                 if ( $billing_country == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  $order->get_billing_country() ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -511,9 +512,9 @@ function wpcl_shortcode( $atts )
                 if ( $shipping_first_name == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  $order->get_shipping_first_name() ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -524,9 +525,9 @@ function wpcl_shortcode( $atts )
                 if ( $shipping_last_name == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  $order->get_shipping_last_name() ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -537,9 +538,9 @@ function wpcl_shortcode( $atts )
                 if ( $shipping_company == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  $order->get_shipping_company() ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -550,9 +551,9 @@ function wpcl_shortcode( $atts )
                 if ( $shipping_address_1 == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  $order->get_shipping_address_1() ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -563,9 +564,9 @@ function wpcl_shortcode( $atts )
                 if ( $shipping_address_2 == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  $order->get_shipping_address_2() ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -576,9 +577,9 @@ function wpcl_shortcode( $atts )
                 if ( $shipping_city == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  $order->get_shipping_city() ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -589,9 +590,9 @@ function wpcl_shortcode( $atts )
                 if ( $shipping_state == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  $order->get_shipping_state() ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -602,9 +603,9 @@ function wpcl_shortcode( $atts )
                 if ( $shipping_postalcode == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  $order->get_shipping_postcode() ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -615,9 +616,9 @@ function wpcl_shortcode( $atts )
                 if ( $shipping_country == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  $order->get_shipping_country() ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -628,9 +629,9 @@ function wpcl_shortcode( $atts )
                 if ( $customer_message == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  $order->get_customer_note() ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -641,11 +642,11 @@ function wpcl_shortcode( $atts )
                 if ( $customer_id == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     if ( $order->get_customer_id() ) {
                         echo  '<a href="' . get_admin_url() . 'user-edit.php?user_id=' . $order->get_customer_id() . '" target="_blank">' . $order->get_customer_id() . '</a>' ;
                     }
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -656,7 +657,7 @@ function wpcl_shortcode( $atts )
                 if ( $customer_username == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     $customerid = $order->get_customer_id();
                     
                     if ( $customerid ) {
@@ -670,7 +671,7 @@ function wpcl_shortcode( $atts )
                     
                     }
                     
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -681,7 +682,7 @@ function wpcl_shortcode( $atts )
                 if ( $customer_display_name == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     $customerid = $order->get_customer_id();
                     
                     if ( $customerid ) {
@@ -689,7 +690,7 @@ function wpcl_shortcode( $atts )
                         echo  $user_info->display_name ;
                     }
                     
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -700,11 +701,11 @@ function wpcl_shortcode( $atts )
                 if ( $order_status_column == 'true' ) {
                     ?>
 								<td>
-									<p>
+									
 									<?php 
                     $status = wc_get_order_status_name( $order->get_status() );
                     echo  $status ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -715,9 +716,9 @@ function wpcl_shortcode( $atts )
                 if ( $order_payment == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  $order->get_payment_method_title() ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -728,9 +729,9 @@ function wpcl_shortcode( $atts )
                 if ( $order_shipping == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  $order->get_shipping_method() ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -741,10 +742,10 @@ function wpcl_shortcode( $atts )
                 if ( $order_coupon == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     $coupons = $order->get_used_coupons();
                     echo  implode( ', ', $coupons ) ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -757,13 +758,13 @@ function wpcl_shortcode( $atts )
                     $item = $order->get_item( $sale->order_item_id );
                     ?>
 								<td>
-									<p>
+									
 										<?php 
                     foreach ( $item->get_meta_data() as $itemvariation ) {
                         echo  '<strong>' . wc_attribute_label( $itemvariation->key ) . '</strong>: &nbsp;' . wc_attribute_label( $itemvariation->value ) . '<br />' ;
                     }
                     ?>
-									</p>
+									
 								</td>
 								<?php 
                 }
@@ -774,9 +775,9 @@ function wpcl_shortcode( $atts )
                 if ( $order_total == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  $order->get_formatted_order_total() ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -788,9 +789,9 @@ function wpcl_shortcode( $atts )
                     $productcount[] = $quantity;
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  $quantity ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }
@@ -801,9 +802,9 @@ function wpcl_shortcode( $atts )
                 if ( $order_qty_total_column == 'true' ) {
                     ?>
 								<td>
-									<p><?php 
+									<?php 
                     echo  get_post_meta( $post_id, 'total_sales', true ) ;
-                    ?></p>
+                    ?>
 								</td>
 								<?php 
                 }

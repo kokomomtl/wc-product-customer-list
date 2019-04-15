@@ -14,21 +14,21 @@ if( ! function_exists('wpcl_enqueue_scripts') ) {
 
 		wp_register_style( 'wpcl-admin-css', plugin_dir_url( __FILE__ ) . 'assets/admin.css', false, '2.3.1' );
 
-		wp_register_style( 'wpcl-datatables-css', 'https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css', false, '1.10.18' );
-		wp_register_style( 'wpcl-datatables-buttons-css', 'https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css', false, '1.2.2' );
-		wp_register_style( 'wpcl-datatables-select-css', 'https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css', false, '1.0' );
+		wp_register_style( 'wpcl-datatables-css', plugin_dir_url( __FILE__ ) . 'assets/vendor/datatables.min.css', false, '1.10.18' );
+		wp_register_style( 'wpcl-datatables-buttons-css', plugin_dir_url( __FILE__ ) . 'assets/vendor/buttons.dataTables.min.css', false, '1.2.2' );
+		wp_register_style( 'wpcl-datatables-select-css', plugin_dir_url( __FILE__ ) . 'assets/vendor/select.dataTables.min.css', false, '1.2.2' );
 
-		wp_register_script( 'wpcl-datatables-js', 'https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js', true, '1.10.18' );
-		wp_register_script( 'wpcl-datatables-buttons-js', 'https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js', true, '1.2.2' );
-		wp_register_script( 'wpcl-datatables-buttons-flash', 'https://cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js', true, '1.2.2' );
-		wp_register_script( 'wpcl-datatables-print', 'https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js', true, '1.2.2' );
-		wp_register_script( 'wpcl-datatables-jszip', 'https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js', true, '2.5.0' );
+		wp_register_script( 'wpcl-datatables-js', plugin_dir_url( __FILE__ ) . 'assets/vendor/datatables.min.js', true, '1.10.18' );
+		wp_register_script( 'wpcl-datatables-buttons-js', plugin_dir_url( __FILE__ ) . 'assets/vendor/dataTables.buttons.min.js', true, '1.2.2' );
+		wp_register_script( 'wpcl-datatables-buttons-flash', plugin_dir_url( __FILE__ ) . 'assets/vendor/buttons.flash.min.js', true, '1.2.2' );
+		wp_register_script( 'wpcl-datatables-print', plugin_dir_url( __FILE__ ) . 'assets/vendor/buttons.print.min.js', true, '1.2.2' );
+		wp_register_script( 'wpcl-datatables-jszip', plugin_dir_url( __FILE__ ) . 'assets/vendor/jszip.min.js', true, '2.5.0' );
 		wp_register_script( 'wpcl-datatables-pdfmake', plugin_dir_url( __FILE__ ) . 'assets/pdfmake/pdfmake.min.js', true, '0.1.20' );
-		wp_register_script( 'wpcl-datatables-vfs-fonts', 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.20/vfs_fonts.js', true, '0.1.20' );
-		wp_register_script( 'wpcl-datatables-buttons-html', 'https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js', true, '1.2.2' );
-		wp_register_script( 'wpcl-datatables-buttons-print', 'https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js', true, '1.2.2' );
-		wp_register_script( 'wpcl-datatables-colreorder', 'https://cdn.datatables.net/colreorder/1.3.2/js/dataTables.colReorder.min.js', true, '1.3.2' );
-		wp_register_script( 'wpcl-datatables-select', 'https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js', true, '1.2.2' );
+		wp_register_script( 'wpcl-datatables-vfs-fonts', plugin_dir_url( __FILE__ ) . 'assets/vendor/vfs_fonts.js', true, '0.1.20' );
+		wp_register_script( 'wpcl-datatables-buttons-html', plugin_dir_url( __FILE__ ) . 'assets/vendor/buttons.html5.min.js', true, '1.2.2' );
+		//wp_register_script( 'wpcl-datatables-buttons-print', 'https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js', true, '1.2.2' );
+		wp_register_script( 'wpcl-datatables-colreorder', plugin_dir_url( __FILE__ ) . 'assets/vendor/dataTables.colReorder.min.js', true, '1.3.2' );
+		wp_register_script( 'wpcl-datatables-select', plugin_dir_url( __FILE__ ) . 'assets/vendor/dataTables.select.min.js', true, '1.2.2' );
 		wp_register_script( 'wpcl-script', plugin_dir_url( __FILE__ ) . 'assets/admin.js', true, '2.3.6' );
 
 		wp_enqueue_style( 'wpcl-admin-css' );
@@ -44,7 +44,7 @@ if( ! function_exists('wpcl_enqueue_scripts') ) {
 		wp_enqueue_script( 'wpcl-datatables-pdfmake');
 		wp_enqueue_script( 'wpcl-datatables-vfs-fonts');
 		wp_enqueue_script( 'wpcl-datatables-buttons-html');
-		wp_enqueue_script( 'wpcl-datatables-buttons-print');
+		//wp_enqueue_script( 'wpcl-datatables-buttons-print');
 		wp_enqueue_script( 'wpcl-datatables-colreorder');
 		wp_enqueue_script( 'wpcl-datatables-select');
 		wp_enqueue_script( 'wpcl-script');
