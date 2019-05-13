@@ -1,7 +1,7 @@
 (function ( $ ) {
 
 	wpclUtils = {
-		chunk : function ( _array, _chunkMaxSize ) {
+		chunk       : function ( _array, _chunkMaxSize ) {
 
 			var arrayOut  = [],
 				i         = 0,
@@ -17,6 +17,15 @@
 			}
 
 			return arrayOut;
+		},
+		arrayUnique : function ( _array ) {
+			var unique = [];
+			for ( var i = 0; i < _array.length; i++ ) {
+				if ( unique.indexOf( _array[ i ] ) === -1 ) {
+					unique.push( _array[ i ] );
+				}
+			}
+			return unique;
 		}
 	};
 
@@ -31,11 +40,13 @@
 
 			// Do we even have the meta box on this page?
 			if ( _this.$tableContainer.length < 0 ) {
-				console.log( 'no tables container' );
+				// console.log( 'no tables container' );
 				return false;
 			}
 
-			_this.$dataTable = _this.$tableContainer.find( '#wpcl-list-table' );
+			_this.$dataTable    = _this.$tableContainer.find( '#wpcl-list-table' );
+			_this.$extraActions = _this.$tableContainer.find( '.wpcl-extra-action' );
+			_this.$extraActions.hide();
 
 			// Check if we have some the necessary config data supplied wpcl_enqueue_scripts()
 			if ( typeof wpcl_script_vars === 'undefined' ) {
@@ -46,7 +57,7 @@
 
 			// No related order items, nothing else to do
 			if ( typeof WPCL_ORDERS === 'undefined' ) {
-				console.log( 'no orders' );
+				// console.log( 'no orders' );
 				return false;
 			}
 
@@ -73,7 +84,7 @@
 		processAllOrderItems : function () {
 			var _this = wpclOrdersTable;
 
-			console.log( 'About to process orders' );
+			// console.log( 'About to process orders' );
 
 
 			_this.needColumns      = true;
@@ -87,6 +98,8 @@
 
 			_this.data    = [];
 			_this.columns = [];
+			_this.emails  = [];
+			_this.total   = 0;
 
 			_this.$progressContainer = $( '<div class="progress-bar">\n' +
 				'<span class="result">' + wpcl_script_vars.trans.processing_orders + '0%' + '</span>' +
@@ -126,27 +139,40 @@
 				// console.log( _data );
 
 
-				if ( typeof _data.success !== 'undefined' && _data.success === true
-					&& typeof _data.data !== 'undefined' && _data.data.length > 0 ) {
+				// Yay! It worked
+				if ( typeof _data.success !== 'undefined' && _data.success === true ) {
 
-					for ( var i = 0; i < _data.data.length; i++ ) {
+					// Compile the data
+					if ( typeof _data.data !== 'undefined' && _data.data.length > 0 ) {
 
-						_this.data.push( _data.data[ i ] );
+						for ( var i = 0; i < _data.data.length; i++ ) {
+							_this.data.push( _data.data[ i ] );
+						}
+
 					}
 
-				}
+					// Compile the columns during the first reception of data
+					if ( _this.needColumns && typeof _data.columns !== 'undefined' ) {
 
-				if ( typeof _data.success !== 'undefined' && _data.success === true && _this.needColumns && typeof _data.columns !== 'undefined' ) {
+						$.each( _data.columns, function ( data, title ) {
+							_this.columns.push( {
+								'data'  : data,
+								'title' : title
+							} )
+						} );
 
-					$.each( _data.columns, function ( data, title ) {
-						_this.columns.push( {
-							// 'data'  : data,
-							'title' : title
-						} )
-					} );
+						_this.needColumns = false;
+					}
 
-					_this.needColumns = false;
 
+					// Add the emails to our global email array
+					if ( typeof _data.email_list !== 'undefined' && _data.email_list.length > 0 ) {
+						_this.emails = _this.emails.concat( _data.email_list );
+					}
+
+					if ( typeof _data.product_count !== 'undefined' ) {
+						_this.total += _data.product_count;
+					}
 				}
 
 
@@ -157,8 +183,8 @@
 					// call itself with the next item in the index
 					_this.getOrderItemInfo();
 
-
-					var percentage = ((_this.currentChunkIndex + 1) / _this.numChunks * 100);
+					// Adjust
+					var percentage = ((_this.currentChunkIndex) / _this.numChunks * 100);
 					_this.$progressBar.css( {
 						width : percentage + '%'
 					} );
@@ -170,10 +196,31 @@
 					);
 				} else {
 
+					// Adjust the progress bar
+					_this.$progressBar.css( { width : '100%' } );
+					_this.$result.text( '100%' );
+
+
+					// Compile the list of unique emails
+					if ( _this.emails.length > 0 ) {
+						_this.emails = wpclUtils.arrayUnique( _this.emails );
+
+						_this.$tableContainer.find( '.wpcl-btn-mail-to-all' ).attr( 'href', 'mailto:?bcc=' + _this.emails.join( ',' ) );
+					}
+
+					_this.$extraActions.find( '.total' ).find( '.product-count' ).text( _this.total );
+
+
 					var endTime = new Date();
 					var seconds = (endTime.getTime() - _this.startTime.getTime()) / 1000;
 
-					console.log( 'AJAX operation took about ' + seconds + ' seconds' );
+					console.log(
+						' [wc-product-customer-list-pro] %cAJAX operation took about ' +
+						'%c' + seconds + ' seconds. ',
+						'background: #222; color: #fff',
+						'background: #222; color: #bada55'
+					);
+
 
 					_this.$progressContainer.slideUp();
 
@@ -315,15 +362,32 @@
 							last     : wpcl_script_vars.paginateLast,
 						}
 					}
+				},
+
+				// add a data-email attribute with the order email
+				createdRow : function ( row, data, dataIndex ) {
+					$( row ).attr( 'data-email', data.wpcl_billing_email_raw );
 				}
 			} );
 
 
+			_this.$extraActions.show();
+
 			// Update email list on row selection
 
-			var $emailSelected = $( '#email-selected' );
+			var $emailSelected = $( '.wpcl-btn-email-selected' );
 			$emailSelected.on( 'click', function ( event ) {
-				//event.preventDefault();
+
+				var href = $( event.currentTarget ).attr( 'href' );
+
+				if ( href.indexOf( "mailto" ) === -1 ) {
+					console.log( 'No rows seem to be selected' );
+					return false;
+				} else {
+					return true;
+				}
+
+
 			} );
 			table.on( 'select', function ( e, dt, type, indexes ) {
 				var emails   = $.map( table.rows( '.selected' ).nodes(), function ( item ) {
@@ -347,6 +411,7 @@
 					$emailSelected.removeAttr( 'disabled' );
 				} else {
 					$emailSelected.attr( 'disabled', 'true' );
+					$emailSelected.attr( 'href', '#' );
 				}
 			} );
 		}

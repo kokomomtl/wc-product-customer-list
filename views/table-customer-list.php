@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WC_Product_Customer_List
- * @version 2.8.4
+ * @version 2.8.5
  */
 
 
@@ -103,7 +103,7 @@ if ( ! function_exists( 'wpcl_add_post_meta_boxes' ) ) {
 
 
 if ( ! function_exists( 'wpcl_post_class_meta_box_json' ) ) {
-	function wpcl_post_class_meta_box_json( ) {
+	function wpcl_post_class_meta_box_json() {
 		global $post;
 
 		// Get product ID
@@ -122,6 +122,16 @@ if ( ! function_exists( 'wpcl_post_class_meta_box_json' ) ) {
 			?>
 			<div id="postcustomstuff" class="wpcl">
 				<table id="wpcl-list-table" style="width:100%"></table>
+
+				<div class="wpcl-extra-action">
+					<?php if ( get_option( 'wpcl_order_qty' ) == 'yes' ) { ?>
+						<p class="total">
+							<?php echo '<strong>' . __( 'Total', 'wc-product-customer-list' ) . ' : </strong> <span class="product-count"></span>'; ?>
+						</p>
+					<?php } ?>
+					<a class="button wpcl-btn-mail-to-all" href="mailto:?bcc="><?php _e( 'Email all customers', 'wc-product-customer-list' ); ?></a>
+					<a href="#" class="button wpcl-btn-email-selected" id="email-selected" disabled><?php _e( 'Email selected customers', 'wc-product-customer-list' ); ?></a>
+				</div>
 			</div>
 			<?php
 		} else {

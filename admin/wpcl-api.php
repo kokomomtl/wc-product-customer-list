@@ -2,7 +2,7 @@
 
 /**
  * @package WC_Product_Customer_List
- * @version 2.8.4
+ * @version 2.8.5
  */
 // If this file is called directly, abort.
 if ( !defined( 'WPINC' ) ) {
@@ -76,21 +76,18 @@ class Wpcl_Api
                 'message' => $item_data['reason'],
             ), 200 );
         }
-        
-        if ( $need_columns ) {
-            // includes columns and emails
-            return new WP_REST_Response( array(
-                'success' => true,
-                'data'    => $item_data['data'],
-                'columns' => $item_data['columns'],
-            ), 200 );
-        } else {
-            return new WP_REST_Response( array(
-                'success' => true,
-                'data'    => $item_data['data'],
-            ), 200 );
+        $response = new WP_REST_Response( array(
+            'success'       => true,
+            'data'          => $item_data['data'],
+            'product_count' => $item_data['product_count'],
+            'email_list'    => $item_data['email_list'],
+            'columns'       => $item_data['columns'],
+        ), 200 );
+        // To not send through data needlessly
+        if ( !$need_columns ) {
+            unset( $response['columns'] );
         }
-    
+        return $response;
     }
     
     public function get_order_item_information( $product_id, $orders, $split_rows )
@@ -247,17 +244,24 @@ class Wpcl_Api
                 $columns[$option_name] = $option_values['column_pretty_name'];
             }
         }
-        foreach ( $orders as $order ) {
-            $order_id = $order->order_id;
-            $item_id = $order->order_item_id;
+        foreach ( $orders as $order_info ) {
+            $order_id = $order_info->order_id;
+            $item_id = $order_info->order_item_id;
+            $current_item = new WC_Order_Item_Product( $item_id );
+            // The product ID
+            $current_product_id = $current_item->get_product_id();
+            if ( $current_product_id != $product_id ) {
+                continue;
+            }
+            $quantity = 0;
             $order = wc_get_order( $order_id );
             $formatted_total = $order->get_formatted_order_total();
             // Get quantity
             $refunded_qty = 0;
-            $items = $order->get_items();
-            foreach ( $items as $item_id => $item ) {
-                if ( $item['product_id'] == $product_id ) {
-                    $refunded_qty += $order->get_qty_refunded_for_item( $item_id );
+            $order_items = $order->get_items();
+            foreach ( $order_items as $order_item_id => $order_item ) {
+                if ( $order_item['product_id'] == $product_id ) {
+                    $refunded_qty += $order->get_qty_refunded_for_item( $order_item_id );
                 }
             }
             // Only one product per line if rows are split
@@ -277,12 +281,15 @@ class Wpcl_Api
             }
             $current_row = array();
             $current_row['billing_email'] = $order->get_billing_email();
+            $current_row['billing_email_raw'] = $current_row['billing_email'];
+            // setting aside to not be processed by the $columns loop later
             $current_row['order'] = $order;
             $current_row['order_id'] = $order_id;
             $current_row['order'] = $order;
             $current_row['product'] = $product;
             $current_row['product_id'] = $product_id;
             $current_row['item_id'] = $item_id;
+            $current_row['wpcl_order_item_id'] = $item_id;
             if ( isset( $columns['wpcl_order_number'] ) ) {
                 $current_row['wpcl_order_number'] = $order_id;
             }
@@ -385,6 +392,23 @@ class Wpcl_Api
             if ( isset( $columns['wpcl_variations'] ) ) {
                 $current_row['wpcl_variations'] = $order->get_item( $item_id );
                 $current_row['wpcl_variations_data'] = array();
+                
+                if ( method_exists( $current_row['wpcl_variations'], 'get_variation_id' ) ) {
+                    $variation_id = $current_row['wpcl_variations']->get_variation_id();
+                    $variation = new WC_Product_Variation( $variation_id );
+                    
+                    if ( is_a( $variation, 'WC_Product_Variation' ) ) {
+                        $variation_name = $variation->get_name();
+                        if ( !empty($variation_name) ) {
+                            $current_row['wpcl_variations_data'][] = array(
+                                'label' => __( 'Variation Name', 'wc-product-customer-list' ),
+                                'value' => $variation->get_name(),
+                            );
+                        }
+                    }
+                
+                }
+                
                 foreach ( $current_row['wpcl_variations']->get_meta_data() as $itemvariation ) {
                     if ( !is_array( $itemvariation->value ) ) {
                         $current_row['wpcl_variations_data'][] = array(
@@ -400,7 +424,7 @@ class Wpcl_Api
             }
             if ( isset( $columns['wpcl_order_qty'] ) ) {
                 
-                if ( $split_rows == 'true' ) {
+                if ( $split_rows == true ) {
                     $current_row['wpcl_order_qty'] = 1;
                 } else {
                     $current_row['wpcl_order_qty'] = $quantity;
@@ -413,22 +437,27 @@ class Wpcl_Api
             }
             $data['data'][] = $current_row;
         }
-        
         if ( !empty($data['email_list']) ) {
-            $data['email_list'] = array_unique( $data['email_list'] );
-            $data['email_list'] = implode( ',', $data['email_list'] );
+            // 2019-05-02 Added array_values because array_unique preserves keys and made JavaScript it was an object instead of an array
+            $data['email_list'] = array_values( array_unique( $data['email_list'] ) );
         }
-        
-        //		$data['columns'] = $columns;
         $display_data = array();
         foreach ( $data['data'] as $data_row ) {
-            $current_row = array();
+            $current_row = array(
+                'wpcl_billing_email_raw' => sanitize_email( $data_row['billing_email_raw'] ),
+            );
             foreach ( $columns as $column_key => $column_name ) {
                 
                 if ( isset( $data_row[$column_key] ) ) {
-                    $current_row[] = $this->prep_cell( $column_key, $data_row[$column_key] );
+                    
+                    if ( 'wpcl_variations' == $column_key ) {
+                        $current_row[$column_key] = $this->prep_cell( 'wpcl_variations', $data_row['wpcl_variations_data'] );
+                    } else {
+                        $current_row[$column_key] = $this->prep_cell( $column_key, $data_row[$column_key] );
+                    }
+                
                 } else {
-                    $current_row[] = $this->prep_cell( $column_key, '' );
+                    $current_row[$column_key] = $this->prep_cell( $column_key, '' );
                 }
             
             }
@@ -462,12 +491,13 @@ class Wpcl_Api
                 }
                 break;
             case 'wpcl_variations':
+                /* @var WC_Order_Item $data */
                 
-                if ( !empty($data) && !empty($data->get_meta_data()) ) {
+                if ( !empty($data) ) {
                     $return = '<span style="max-height: 50px; overflow-y: auto; display: block;">';
-                    foreach ( $data->get_meta_data() as $itemvariation ) {
-                        if ( !is_array( $itemvariation->value ) ) {
-                            $return .= '<strong>' . wc_attribute_label( $itemvariation->key ) . '</strong>: &nbsp;' . wc_attribute_label( $itemvariation->value ) . '<br />';
+                    foreach ( $data as $itemvariation ) {
+                        if ( !is_array( $itemvariation['value'] ) ) {
+                            $return .= '<strong>' . $itemvariation['label'] . '</strong>: &nbsp;' . $itemvariation['value'] . '<br />';
                         }
                     }
                     $return .= '</span>';

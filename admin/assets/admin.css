@@ -96,6 +96,9 @@ thead th strong {
 	margin-right: 3px;
 }
 
+#postcustomstuff #wpcl-list-table {
+	border: none;
+}
 
 /* progress bar */
 #wc-product-customer-list-meta-box .progress-bar {
