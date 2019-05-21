@@ -61,14 +61,13 @@ class Wpcl_Api
         }
         $params = $data->get_params();
         $orders = ( !empty($params['orders']) ? json_decode( $params['orders'] ) : false );
-        $product_id = ( !empty($params['product_id']) ? filter_var( $params['product_id'], FILTER_SANITIZE_NUMBER_INT ) : false );
         $need_columns = ( !empty($params['need_columns']) ? $params['need_columns'] : false );
-        if ( empty($product_id) || empty($orders) ) {
+        if ( empty($orders) ) {
             return new WP_REST_Response( array(
                 'message' => __( 'Missing data', 'wc-product-customer-list' ),
             ), 401 );
         }
-        $item_data = $this->get_order_item_information( $product_id, $orders, false );
+        $item_data = $this->get_order_item_information( $orders, false );
         // there was a problem with the data. for example: refunded order
         if ( $item_data['success'] === false ) {
             return new WP_REST_Response( array(
@@ -90,9 +89,8 @@ class Wpcl_Api
         return $response;
     }
     
-    public function get_order_item_information( $product_id, $orders, $split_rows )
+    public function get_order_item_information( $orders, $split_rows )
     {
-        $product = WC()->product_factory->get_product( $product_id );
         $fields = array(
             'wpcl_order_number'          => array(
             'default_value'      => 'yes',
@@ -247,6 +245,8 @@ class Wpcl_Api
         foreach ( $orders as $order_info ) {
             $order_id = $order_info->order_id;
             $item_id = $order_info->order_item_id;
+            $product_id = $order_info->product_id;
+            $product = WC()->product_factory->get_product( $product_id );
             $current_item = new WC_Order_Item_Product( $item_id );
             // The product ID
             $current_product_id = $current_item->get_product_id();

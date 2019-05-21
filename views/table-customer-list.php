@@ -166,7 +166,7 @@ if ( ! function_exists( 'wpcl_gather_item_sales' ) ) {
 		$post_string           = "'" . implode( "', '", $post_id ) . "'";
 
 		$item_sales = $wpdb->get_results( $wpdb->prepare(
-			"SELECT o.ID as order_id, oi.order_item_id FROM
+			"SELECT o.ID as order_id, oi.order_item_id,  oim.meta_value AS product_id FROM
 			{$wpdb->prefix}woocommerce_order_itemmeta oim
 			INNER JOIN {$wpdb->prefix}woocommerce_order_items oi
 			ON oim.order_item_id = oi.order_item_id

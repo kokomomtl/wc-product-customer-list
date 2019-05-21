@@ -88,7 +88,7 @@
 
 
 			_this.needColumns      = true;
-			_this.currentProductId = wpcl_script_vars.productId;
+			// _this.currentProductId = wpcl_script_vars.productId;
 
 			// We're taking all our orders and making groups to send to the REST API
 			// One at a time is wayyy too slow
@@ -129,8 +129,7 @@
 				method     : 'POST',
 				data       : {
 					orders       : JSON.stringify( _this.orderIdBatches[ _this.currentChunkIndex ] ), // WP REST API doesn't accept multi-dimensional params
-					product_id   : _this.currentProductId,
-					need_columns : _this.needColumns,
+					need_columns : _this.needColumns
 				},
 				beforeSend : function ( xhr ) {
 					xhr.setRequestHeader( 'X-WP-Nonce', wpcl_script_vars.rest_nonce );
@@ -166,7 +165,7 @@
 
 
 					// Add the emails to our global email array
-					if ( typeof _data.email_list !== 'undefined' && _data.email_list.length > 0 ) {
+					if ( _data.email_list != null && typeof _data.email_list !== 'undefined' && _data.email_list.length > 0 ) {
 						_this.emails = _this.emails.concat( _data.email_list );
 					}
 
