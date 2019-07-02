@@ -67,7 +67,9 @@ class Wpcl_Api
                 'message' => __( 'Missing data', 'wc-product-customer-list' ),
             ), 401 );
         }
-        $item_data = $this->get_order_item_information( $orders, false );
+        // Added an option to have different rightpress columns appear together if the label is the same
+        $consolidate_rightpress_columns = get_option( 'wpcl_consolidate_rightpress_columns', 'yes' ) == 'yes';
+        $item_data = $this->get_order_item_information( $orders, false, $consolidate_rightpress_columns );
         // there was a problem with the data. for example: refunded order
         if ( $item_data['success'] === false ) {
             return new WP_REST_Response( array(
@@ -89,7 +91,7 @@ class Wpcl_Api
         return $response;
     }
     
-    public function get_order_item_information( $orders, $split_rows )
+    public function get_order_item_information( $orders, $split_rows, $consolidate_rightpress_columns = true )
     {
         $fields = array(
             'wpcl_order_number'          => array(
