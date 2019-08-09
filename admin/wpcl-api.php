@@ -363,9 +363,9 @@ class Wpcl_Api
             }
             $customer_id = $order->get_customer_id();
             $customer_info = ( !empty($customer_id) ? get_userdata( $customer_id ) : '' );
-            $customer_username = ( !empty($customer_info) ? $customer_info->user_login : '' );
-            $customer_userlogin = ( !empty($customer_info) ? get_admin_url() . 'user-edit.php?user_id=' . $customer_id : '' );
-            $customer_displayname = ( !empty($customer_info) ? $customer_info->display_name : '' );
+            $customer_username = ( !empty($customer_info) ? $customer_info->user_login : '<em>' . __( '[no customer ID in order]', 'wc-product-customer-list' ) . '</em>' );
+            $customer_userlogin = ( !empty($customer_info) ? get_admin_url() . 'user-edit.php?user_id=' . $customer_id : '<em>' . __( '[no customer ID in order]', 'wc-product-customer-list' ) . '</em>' );
+            $customer_displayname = ( !empty($customer_info) ? $customer_info->display_name : '<em>' . __( '[no customer ID in order]', 'wc-product-customer-list' ) . '</em>' );
             if ( isset( $columns['wpcl_customer_login'] ) ) {
                 $current_row['wpcl_customer_login'] = $customer_userlogin;
             }

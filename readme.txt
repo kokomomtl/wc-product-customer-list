@@ -1,9 +1,9 @@
 === Product Customer List for WooCommerce ===
-Contributors: kokomoweb
+Contributors: kokomoweb, freemius
 Tags: woocommerce, customer list, who bought, admin order list, product-specific, export customers to csv, email customers, customer list, customer, list, print, front-end, tickets, shows, courses, customers, shortcode
 Requires at least: 4.0
 Tested up to: 5.2.2
-Stable tag: 2.8.8
+Stable tag: 2.8.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,7 +53,7 @@ Great for sending out e-mails or getting a list of customers for courses, for sh
 
 To upgrade the plugin to the premium version, simply click on "upgrade" under the plugin title in the plugin list page, or [purchase it here](https://checkout.freemius.com/mode/dialog/plugin/2009/plan/2994/).
 
-= Contributors: =
+= Contributors: =, freemius
 * Support for variable products: [Alexandre Simard](https://profiles.wordpress.org/brocheafoin/)
 * Dutch translation: [pieterclaesen](https://wordpress.org/support/profile/pieterclaesen)
 * Portuguese (Brazil) translation: [Marcello Ruoppolo](https://profiles.wordpress.org/mragenciadigital)
@@ -162,6 +162,10 @@ Many hooks and filters. Documentation coming soon.
 2. The settings page.
 
 == Changelog ==
+
+= 2.8.9 =
+* Fixed broken PDF button
+* Added the IntersectionObserver API and a few extra class and method safety checks in PHP.
 
 = 2.8.8 =
 * Updated the Freemius SDK to remove an error that was introduced in WordPress 5.2
