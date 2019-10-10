@@ -1,4 +1,4 @@
-(function ( $ ) {
+( function ( $ ) {
 
 	wpclUtils = {
 		chunk       : function ( _array, _chunkMaxSize ) {
@@ -87,7 +87,7 @@
 			// console.log( 'About to process orders' );
 
 
-			_this.needColumns      = true;
+			_this.needColumns = true;
 			// _this.currentProductId = wpcl_script_vars.productId;
 
 			// We're taking all our orders and making groups to send to the REST API
@@ -96,10 +96,10 @@
 			_this.currentChunkIndex = 0;
 			_this.numChunks         = _this.orderIdBatches.length;
 
-			_this.data    = [];
-			_this.columns = [];
-			_this.emails  = [];
-			_this.total   = 0;
+			_this.data          = [];
+			_this.columns       = [];
+			_this.emails        = [];
+			_this.totalQuantity = 0;
 
 			_this.$progressContainer = $( '<div class="progress-bar">\n' +
 				'<span class="result">' + wpcl_script_vars.trans.processing_orders + '0%' + '</span>' +
@@ -117,43 +117,69 @@
 			_this.getOrderItemInfo( _this.currentOrderIndex );
 
 
+			_this.rowCounter = 0;
+
+		},
+
+		displayAjaxError : function ( error ) {
+			var _this = wpclOrdersTable;
+
+			_this.$progressContainer.html( '<span class="result alert error">' + error + '</span>' );
 		},
 
 		getOrderItemInfo : function () {
 			var _this = wpclOrdersTable;
 
-			// console.log( 'Processing order ', _this.orderIdBatches[ _this.currentChunkIndex ] );
 
 			$.ajax( {
-				url        : wpcl_script_vars.rest_urls.order_item_info,
-				method     : 'POST',
-				data       : {
-					orders       : JSON.stringify( _this.orderIdBatches[ _this.currentChunkIndex ] ), // WP REST API doesn't accept multi-dimensional params
-					need_columns : _this.needColumns
-				},
-				beforeSend : function ( xhr ) {
-					xhr.setRequestHeader( 'X-WP-Nonce', wpcl_script_vars.rest_nonce );
-				}
-			} ).done( function ( _data ) {
-				// console.log( _data );
+					url    : wpcl_script_vars.ajax_path,
+					method : 'POST',
+					data   : {
+						action       : 'process_order_items',
+						nonce        : wpcl_script_vars.ajax_nonce,
+						orders       : _this.orderIdBatches[ _this.currentChunkIndex ],
+						need_columns : _this.needColumns
+					}
+				} )
+				.fail( function ( jqXHR, textStatus, errorThrown ) {
+					_this.displayAjaxError( wpcl_script_vars.trans.ajax_error );
+					console.error( '[wc-product-customer-list-pro] ' + wpcl_script_vars.trans.ajax_error, jqXHR, textStatus, errorThrown );
+				} )
+
+				.done( function ( _data ) {
+					// console.log( _data );
+
+					if ( typeof _data.success === 'undefined' || _data.success !== true ) {
+						if ( typeof _data.message !== 'undefined' ) {
+							_this.displayAjaxError( _data.message );
+						} else if ( typeof _data.data.message !== 'undefined' ) {
+							_this.displayAjaxError( _data.data.message );
+						} else if ( typeof _data.data !== 'undefined' ) {
+							_this.displayAjaxError( _data.data );
+						} else {
+							_this.displayAjaxError( _data );
+						}
+
+						return;
+					}
 
 
-				// Yay! It worked
-				if ( typeof _data.success !== 'undefined' && _data.success === true ) {
+					// Yay! It worked
+
 
 					// Compile the data
-					if ( typeof _data.data !== 'undefined' && _data.data.length > 0 ) {
+					if ( typeof _data.data !== 'undefined' && typeof _data.data.order_rows !== 'undefined' && _data.data.order_rows.length > 0 ) {
 
-						for ( var i = 0; i < _data.data.length; i++ ) {
-							_this.data.push( _data.data[ i ] );
+						for ( var i = 0; i < _data.data.order_rows.length; i++ ) {
+							_this.data.push( _data.data.order_rows[ i ] );
 						}
 
 					}
 
 					// Compile the columns during the first reception of data
-					if ( _this.needColumns && typeof _data.columns !== 'undefined' ) {
+					if ( _this.needColumns && typeof _data.data.columns !== 'undefined' ) {
 
-						$.each( _data.columns, function ( data, title ) {
+						$.each( _data.data.columns, function ( data, title ) {
 							_this.columns.push( {
 								'data'  : data,
 								'title' : title
@@ -165,68 +191,66 @@
 
 
 					// Add the emails to our global email array
-					if ( _data.email_list != null && typeof _data.email_list !== 'undefined' && _data.email_list.length > 0 ) {
+					if ( _data.data.email_list != null && typeof _data.data.email_list !== 'undefined' && _data.data.email_list.length > 0 ) {
 						_this.emails = _this.emails.concat( _data.email_list );
 					}
 
-					if ( typeof _data.product_count !== 'undefined' ) {
-						_this.total += _data.product_count;
-					}
-				}
-
-
-				_this.currentChunkIndex++;
-				if ( _this.currentChunkIndex < _this.numChunks ) {
-
-
-					// call itself with the next item in the index
-					_this.getOrderItemInfo();
-
-					// Adjust
-					var percentage = ((_this.currentChunkIndex) / _this.numChunks * 100);
-					_this.$progressBar.css( {
-						width : percentage + '%'
-					} );
-
-					_this.$result.text(
-						wpcl_script_vars.trans.processing_orders +
-						// (_this.currentChunkIndex + 1) + '/' + (_this.lastChunkIndex + 1) + '  ' +
-						(Math.round( percentage * 100 ) / 100) + '%'
-					);
-				} else {
-
-					// Adjust the progress bar
-					_this.$progressBar.css( { width : '100%' } );
-					_this.$result.text( '100%' );
-
-
-					// Compile the list of unique emails
-					if ( _this.emails.length > 0 ) {
-						_this.emails = wpclUtils.arrayUnique( _this.emails );
-
-						_this.$tableContainer.find( '.wpcl-btn-mail-to-all' ).attr( 'href', 'mailto:?bcc=' + _this.emails.join( ',' ) );
+					if ( typeof _data.data.product_count !== 'undefined' ) {
+						_this.totalQuantity += _data.data.product_count;
 					}
 
-					_this.$extraActions.find( '.total' ).find( '.product-count' ).text( _this.total );
+
+					_this.currentChunkIndex++;
+					if ( _this.currentChunkIndex < _this.numChunks ) {
 
 
-					var endTime = new Date();
-					var seconds = (endTime.getTime() - _this.startTime.getTime()) / 1000;
+						// call itself with the next item in the index
+						_this.getOrderItemInfo();
 
-					console.log(
-						' [wc-product-customer-list-pro] %cAJAX operation took about ' +
-						'%c' + seconds + ' seconds. ',
-						'background: #222; color: #fff',
-						'background: #222; color: #bada55'
-					);
+						// Adjust
+						var percentage = ( ( _this.currentChunkIndex ) / _this.numChunks * 100 );
+						_this.$progressBar.css( {
+							width : percentage + '%'
+						} );
+
+						_this.$result.text(
+							wpcl_script_vars.trans.processing_orders +
+							( Math.round( percentage * 100 ) / 100 ) + '%'
+						);
+					} else {
+
+						// Adjust the progress bar
+						_this.$progressBar.css( { width : '100%' } );
+						_this.$result.text( '100%' );
 
 
-					_this.$progressContainer.slideUp();
+						// Compile the list of unique emails
+						if ( _this.emails.length > 0 ) {
+							_this.emails = wpclUtils.arrayUnique( _this.emails );
 
-					// we have all our info. Time to setup the datables
-					_this.setupDataTables();
-				}
-			} );
+							_this.$tableContainer.find( '.wpcl-btn-mail-to-all' ).attr( 'href', 'mailto:?bcc=' + _this.emails.join( ',' ) );
+						}
+
+						_this.$extraActions.find( '.total' ).find( '.product-count' ).text( _this.totalQuantity );
+
+
+						var endTime = new Date();
+						var seconds = ( endTime.getTime() - _this.startTime.getTime() ) / 1000;
+
+						console.log(
+							' [wc-product-customer-list-pro] %cCompiling ' + _this.data.length + ' customers took took about ' +
+							'%c' + seconds + ' seconds. ',
+							'background: #222; color: #fff',
+							'background: #222; color: #bada55'
+						);
+
+
+						_this.$progressContainer.slideUp();
+
+						// we have all our info. Time to setup the datables
+						_this.setupDataTables();
+					}
+				} );
 
 		},
 
@@ -250,7 +274,6 @@
 			if ( wpcl_script_vars.titleSku === 'yes' ) {
 				pdfTitle = productTitle + ' (' + productSKU + ')';
 			}
-
 
 			var table = _this.$dataTable.DataTable( {
 
@@ -422,4 +445,4 @@
 	} );
 
 
-})( jQuery );
+} )( jQuery );

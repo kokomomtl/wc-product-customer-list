@@ -182,3 +182,8 @@ thead th strong {
 .wpcl .dataTables_wrapper .dataTables_length {
 	margin-left: 10px;
 }
+
+.wpcl .error {
+	color: #f66;
+	font-weight: bold;
+}

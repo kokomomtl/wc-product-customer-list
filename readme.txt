@@ -2,8 +2,8 @@
 Contributors: kokomoweb, freemius
 Tags: woocommerce, customer list, who bought, admin order list, product-specific, export customers to csv, email customers, customer list, customer, list, print, front-end, tickets, shows, courses, customers, shortcode
 Requires at least: 4.0
-Tested up to: 5.2.2
-Stable tag: 2.8.9
+Tested up to: 5.2.3
+Stable tag: 2.9.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,7 @@ Great for sending out e-mails or getting a list of customers for courses, for sh
 = Premium version: =
 
 * Support for Custom Fields
+* Support for User meta
 * Support for WooCommerce Custom Fields (RightPress)
 * Support for WooTours
 * Support for WooEvents
@@ -138,7 +139,7 @@ If you do not use any attributes for the product ID, it will display the custome
 
 Here is an example containing every attribute of the shortcode, with the default values. Please note that it is not needed to include each attribute, you can simply use the attributes that you wish to modify (replace 999 with your product id):
 
-`[customer_list product="999" show_titles="true" order_status="wc-completed" order_number="false" order_date="false" billing_first_name="true" billing_last_name="true" billing_company="false" billing_email="false" billing_phone="false" billing_address_1="false" billing_address_2="false" billing_city="false" billing_state="false" billing_postalcode="false" billing_country="false" shipping_first_name="false" shipping_last_name="false" shipping_company="false" shipping_address_1="false" shipping_address_2="false" shipping_city="false" shipping_state="false" shipping_postalcode="false" shipping_country="false" customer_message="false" customer_id="false" customer_username="false" order_status="false" order_payment="false" order_shipping="false" order_coupon="false" order_variations="true" order_total="false" order_qty="false" order_qty_total="false" order_qty_total_column="false" limit="9999"]`
+`[customer_list product="999" show_titles="true" order_status="wc-completed" order_number="false" order_date="false" billing_first_name="true" billing_last_name="true" billing_company="false" billing_email="false" billing_phone="false" billing_address_1="false" billing_address_2="false" billing_city="false" billing_state="false" billing_postalcode="false" billing_country="false" shipping_first_name="false" shipping_last_name="false" shipping_company="false" shipping_address_1="false" shipping_address_2="false" shipping_city="false" shipping_state="false" shipping_postalcode="false" shipping_country="false" customer_message="false" customer_id="false" customer_username="false"  order_payment="false" order_shipping="false" order_coupon="false" order_variations="true" order_total="false" order_qty="false" order_qty_total="false" order_qty_total_column="false" limit="9999"]`
 
 = Why doesn't the customer list appear when I edit a product? =
 
@@ -162,6 +163,11 @@ Many hooks and filters. Documentation coming soon.
 2. The settings page.
 
 == Changelog ==
+
+= 2.9.0 =
+* Switched from REST to ajax
+* Fixed partial refunds option
+* Pro: Added User meta columns
 
 = 2.8.9 =
 * Fixed broken PDF button

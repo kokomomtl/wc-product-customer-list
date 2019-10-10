@@ -126,7 +126,7 @@ if ( ! function_exists( 'wpcl_post_class_meta_box_json' ) ) {
 				<div class="wpcl-extra-action">
 					<?php if ( get_option( 'wpcl_order_qty' ) == 'yes' ) { ?>
 						<p class="total">
-							<?php echo '<strong>' . __( 'Total', 'wc-product-customer-list' ) . ' : </strong> <span class="product-count"></span>'; ?>
+							<?php echo '<strong>' . __( 'Total quantity sold', 'wc-product-customer-list' ) . ' : </strong> <span class="product-count"></span>'; ?>
 						</p>
 					<?php } ?>
 					<a class="button wpcl-btn-mail-to-all" href="mailto:?bcc="><?php _e( 'Email all customers', 'wc-product-customer-list' ); ?></a>

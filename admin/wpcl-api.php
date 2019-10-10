@@ -2,7 +2,7 @@
 
 /**
  * @package WC_Product_Customer_List
- * @version 2.8.5
+ * @version 2.9.0
  */
 // If this file is called directly, abort.
 if ( !defined( 'WPINC' ) ) {
@@ -18,77 +18,57 @@ class Wpcl_Api
     {
     }
     
-    public static function get_rest_url( $type = 'order-items' )
-    {
-        switch ( $type ) {
-            case 'order-items':
-            default:
-                return self::$rest_namespace . self::$rest_route_order_items;
-                break;
-        }
-    }
-    
     public function init()
     {
-        // Create a REST route
-        add_action( 'rest_api_init', array( $this, 'add_rest_route' ) );
+        // prepare wp_ajax
+        add_action( 'wp_ajax_process_order_items', array( $this, 'process_order_items_ajax' ) );
     }
     
-    public function add_rest_route()
+    public function process_order_items_ajax()
     {
-        register_rest_route( self::$rest_namespace, self::$rest_route_order_items, array(
-            'methods'             => 'POST',
-            'callback'            => array( $this, 'process_order_items_rest_call' ),
-            'args'                => array(
-            'product_id' => array(
-            'validate_callback' => function ( $param, $request, $key ) {
-            return is_numeric( $param );
-        },
-        ),
-        ),
-            'permission_callback' => function () {
-            return is_user_logged_in() && current_user_can( self::$necessary_capability );
-        },
-        ) );
-    }
-    
-    public function process_order_items_rest_call( WP_REST_Request $data )
-    {
-        if ( !is_user_logged_in() || !current_user_can( self::$necessary_capability ) || !rest_cookie_check_errors( null ) ) {
-            return new WP_REST_Response( array(
-                'message' => __( 'You do not have the necessary capabilities for this request', 'wc-product-customer-list' ),
-            ), 401 );
+        // check permissions
+        
+        if ( !is_user_logged_in() || !current_user_can( self::$necessary_capability ) ) {
+            wp_send_json_error( __( 'You do not have the permissions to access this information', 'wc-product-customer-list' ) );
+            return;
         }
-        $params = $data->get_params();
-        $orders = ( !empty($params['orders']) ? json_decode( $params['orders'] ) : false );
-        $need_columns = ( !empty($params['need_columns']) ? $params['need_columns'] : false );
+        
+        // check nonce
+        
+        if ( !wp_verify_nonce( $_REQUEST['nonce'], 'wc-product-customer-list-pro' ) ) {
+            wp_send_json_error( __( 'You do not have the permissions to access this information', 'wc-product-customer-list' ) );
+            return;
+        }
+        
+        $orders = ( !empty($_POST['orders']) ? $_POST['orders'] : false );
+        $need_columns = ( !empty($_POST['need_columns']) ? $_POST['need_columns'] : false );
+        
         if ( empty($orders) ) {
-            return new WP_REST_Response( array(
-                'message' => __( 'Missing data', 'wc-product-customer-list' ),
-            ), 401 );
+            wp_send_json_error( __( 'Invalid order IDs', 'wc-product-customer-list' ) );
+            return;
         }
-        // Added an option to have different rightpress columns appear together if the label is the same
+        
         $consolidate_rightpress_columns = get_option( 'wpcl_consolidate_rightpress_columns', 'yes' ) == 'yes';
         $item_data = $this->get_order_item_information( $orders, false, $consolidate_rightpress_columns );
         // there was a problem with the data. for example: refunded order
+        
         if ( $item_data['success'] === false ) {
-            return new WP_REST_Response( array(
-                'success' => false,
-                'message' => $item_data['reason'],
-            ), 200 );
+            wp_send_json_error( $item_data['reason'] );
+            return;
         }
-        $response = new WP_REST_Response( array(
+        
+        $response = array(
             'success'       => true,
-            'data'          => $item_data['data'],
+            'order_rows'    => $item_data['data'],
             'product_count' => $item_data['product_count'],
             'email_list'    => $item_data['email_list'],
             'columns'       => $item_data['columns'],
-        ), 200 );
+        );
         // To not send through data needlessly
         if ( !$need_columns ) {
             unset( $response['columns'] );
         }
-        return $response;
+        wp_send_json_success( $response );
     }
     
     public function get_order_item_information( $orders, $split_rows, $consolidate_rightpress_columns = true )
@@ -245,9 +225,9 @@ class Wpcl_Api
             }
         }
         foreach ( $orders as $order_info ) {
-            $order_id = $order_info->order_id;
-            $item_id = $order_info->order_item_id;
-            $product_id = $order_info->product_id;
+            $order_id = $order_info['order_id'];
+            $item_id = $order_info['order_item_id'];
+            $product_id = $order_info['product_id'];
             $product = WC()->product_factory->get_product( $product_id );
             $current_item = new WC_Order_Item_Product( $item_id );
             // The product ID
@@ -276,10 +256,11 @@ class Wpcl_Api
             // Check for partially refunded orders
             if ( $quantity == 0 && get_option( 'wpcl_order_partial_refunds', 'no' ) == 'yes' ) {
                 // Order has been partially refunded
-                return array(
-                    'success' => false,
-                    'reason'  => 'refunded order',
-                );
+                //				return array(
+                //					'success' => false,
+                //					'reason'  => 'refunded order',
+                //				);
+                continue;
             }
             $current_row = array();
             $current_row['billing_email'] = $order->get_billing_email();
@@ -363,9 +344,9 @@ class Wpcl_Api
             }
             $customer_id = $order->get_customer_id();
             $customer_info = ( !empty($customer_id) ? get_userdata( $customer_id ) : '' );
-            $customer_username = ( !empty($customer_info) ? $customer_info->user_login : '<em>' . __( '[no customer ID in order]', 'wc-product-customer-list' ) . '</em>' );
-            $customer_userlogin = ( !empty($customer_info) ? get_admin_url() . 'user-edit.php?user_id=' . $customer_id : '<em>' . __( '[no customer ID in order]', 'wc-product-customer-list' ) . '</em>' );
-            $customer_displayname = ( !empty($customer_info) ? $customer_info->display_name : '<em>' . __( '[no customer ID in order]', 'wc-product-customer-list' ) . '</em>' );
+            $customer_username = ( !empty($customer_info) ? $customer_info->user_login : '<em><small>' . __( '[no customer ID in order]', 'wc-product-customer-list' ) . '</small></em>' );
+            $customer_userlogin = ( !empty($customer_info) ? get_admin_url() . 'user-edit.php?user_id=' . $customer_id : '<em><small>' . __( '[no customer ID in order]', 'wc-product-customer-list' ) . '</small></em>' );
+            $customer_displayname = ( !empty($customer_info) ? $customer_info->display_name : '<em><small>' . __( '[no customer ID in order]', 'wc-product-customer-list' ) . '</em></small>' );
             if ( isset( $columns['wpcl_customer_login'] ) ) {
                 $current_row['wpcl_customer_login'] = $customer_userlogin;
             }

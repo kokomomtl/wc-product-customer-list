@@ -87,11 +87,10 @@ if ( ! function_exists( 'wpcl_enqueue_scripts' ) ) {
 			'productId'            => $post->ID,
 			'trans'                => array(
 				'processing_orders' => __( 'Processing Orders: ', 'wc-product-customer-list' ),
+				'ajax_error'        => __( 'There was an AJAX error', 'wc-product-customer-list' ),
 			),
-			'rest_urls'            => array(
-				'order_item_info' => get_rest_url( null, Wpcl_Api::get_rest_url( 'order-items' ) ),
-			),
-			'rest_nonce'           => wp_create_nonce( 'wp_rest' ),
+			'ajax_nonce'           => wp_create_nonce( 'wc-product-customer-list-pro' ),
+			'ajax_path'            => admin_url( 'admin-ajax.php' ),
 		) );
 	}
 
