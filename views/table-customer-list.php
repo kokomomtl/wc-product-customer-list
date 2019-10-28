@@ -129,9 +129,14 @@ if ( ! function_exists( 'wpcl_post_class_meta_box_json' ) ) {
 							<?php echo '<strong>' . __( 'Total quantity sold', 'wc-product-customer-list' ) . ' : </strong> <span class="product-count"></span>'; ?>
 						</p>
 					<?php } ?>
-					<a class="button wpcl-btn-mail-to-all" href="mailto:?bcc="><?php _e( 'Email all customers', 'wc-product-customer-list' ); ?></a>
+					<div class="wpcl-btn-mail-to-all-group">
+						<a class="button wpcl-btn-mail-to-all" href="mailto:?bcc="><?php _e( 'Email all customers', 'wc-product-customer-list' ); ?></a>
+
+
+					</div>
 					<a href="#" class="button wpcl-btn-email-selected" id="email-selected" disabled><?php _e( 'Email selected customers', 'wc-product-customer-list' ); ?></a>
 				</div>
+				<div class="wpcl-email-all-technical-note" aria-hidden="true"><?php _e( '*Various browsers have limits as to how many characters mailto: links can have. To be safe, we have broken down your customer list to safe lengths over multiple buttons.', 'wc-product-customer-list' ); ?></div>
 			</div>
 			<?php
 		} else {

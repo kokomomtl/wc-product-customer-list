@@ -192,7 +192,9 @@
 
 					// Add the emails to our global email array
 					if ( _data.data.email_list != null && typeof _data.data.email_list !== 'undefined' && _data.data.email_list.length > 0 ) {
-						_this.emails = _this.emails.concat( _data.email_list );
+						_this.emails = _this.emails.concat( _data.data.email_list );
+
+
 					}
 
 					if ( typeof _data.data.product_count !== 'undefined' ) {
@@ -228,7 +230,82 @@
 						if ( _this.emails.length > 0 ) {
 							_this.emails = wpclUtils.arrayUnique( _this.emails );
 
-							_this.$tableContainer.find( '.wpcl-btn-mail-to-all' ).attr( 'href', 'mailto:?bcc=' + _this.emails.join( ',' ) );
+
+							// Some browsers don't like mailto: links longer than about 2000 characters
+							// https://stackoverflow.com/a/417184/636709
+
+
+							var emailGroups = [],
+								mailto      = 'mailto:',
+								limitChars  = 1900;
+
+							for ( var i = 0; i < _this.emails.length; i++ ) {
+								var email      = _this.emails[ i ],
+									testMailto = mailto + email + ';';
+
+								if ( testMailto.length > limitChars ) {
+									// adding this one would make it too long,
+									// store it in our groups and reset the mailto
+									emailGroups.push( mailto );
+									mailto = 'mailto:' + email + ';'
+								} else {
+									// still some place? Let's add it to the end
+									mailto = testMailto;
+								}
+							}
+
+							// for the last one
+							emailGroups.push( mailto );
+
+
+							// in case we already had more than one "Email all" button, let's clean everything up
+							var $btnEmailAllSection  = _this.$tableContainer.find( '.wpcl-btn-mail-to-all-group' ),
+								$btnEmailAll         = $btnEmailAllSection.find( '.wpcl-btn-mail-to-all' ),
+								$multipleButtonsNote = _this.$tableContainer.find( '.wpcl-email-all-technical-note' );
+
+							if ( $btnEmailAll.length > 1 ) {
+								$btnEmailAll.slice( 1 ).remove();
+							}
+
+
+							// let's see how many buttons we need
+							if ( emailGroups.length > 1 ) {
+								// need more than one button? OK.
+
+								var $firstBtn = $btnEmailAll.eq( 0 ),
+									numGroups = emailGroups.length;
+
+								for ( var i = 0; i < numGroups; i++ ) {
+									var currMailto = emailGroups[ i ];
+
+									if ( i === 0 ) {
+										// first one? doing the same as usual
+										$firstBtn
+											.attr( 'href', currMailto )
+											.text( wpcl_script_vars.trans.email_multiple_button_text + ' (' + ( i + 1 ) + '/' + numGroups + ')' );
+									} else {
+										// need another button? let's create one
+										$firstBtn
+											.clone()
+											.appendTo( $btnEmailAllSection )
+											.attr( 'href', currMailto )
+											.text( wpcl_script_vars.trans.email_multiple_button_text + ' (' + ( i + 1 ) + '/' + numGroups + ')' );
+									}
+
+								}
+
+								$multipleButtonsNote
+									.show()
+									.attr( 'aria-hidden', false );
+
+							} else {
+								// Only need one button? awesome!
+								_this.$tableContainer.find( '.wpcl-btn-mail-to-all' ).attr( 'href', emailGroups[ 0 ] );
+
+								$multipleButtonsNote
+									.hide()
+									.attr( 'aria-hidden', true );
+							}
 						}
 
 						_this.$extraActions.find( '.total' ).find( '.product-count' ).text( _this.totalQuantity );

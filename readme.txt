@@ -2,8 +2,8 @@
 Contributors: kokomoweb, freemius
 Tags: woocommerce, customer list, who bought, admin order list, product-specific, export customers to csv, email customers, customer list, customer, list, print, front-end, tickets, shows, courses, customers, shortcode
 Requires at least: 4.0
-Tested up to: 5.2.3
-Stable tag: 2.9.0
+Tested up to: 5.2.4
+Stable tag: 2.9.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,9 @@ Many hooks and filters. Documentation coming soon.
 2. The settings page.
 
 == Changelog ==
+
+= 2.9.1 =
+* Fix for email all customers
 
 = 2.9.0 =
 * Switched from REST to ajax

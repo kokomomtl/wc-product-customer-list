@@ -86,8 +86,9 @@ if ( ! function_exists( 'wpcl_enqueue_scripts' ) ) {
 			'productSku'           => $product_sku,
 			'productId'            => $post->ID,
 			'trans'                => array(
-				'processing_orders' => __( 'Processing Orders: ', 'wc-product-customer-list' ),
-				'ajax_error'        => __( 'There was an AJAX error', 'wc-product-customer-list' ),
+				'processing_orders'          => __( 'Processing Orders: ', 'wc-product-customer-list' ),
+				'ajax_error'                 => __( 'There was an AJAX error', 'wc-product-customer-list' ),
+				'email_multiple_button_text' => __( 'Email all customers', 'wc-product-customer-list' ),
 			),
 			'ajax_nonce'           => wp_create_nonce( 'wc-product-customer-list-pro' ),
 			'ajax_path'            => admin_url( 'admin-ajax.php' ),

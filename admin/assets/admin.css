@@ -43,30 +43,30 @@ thead th strong {
 }
 
 #wc-product-customer-list-meta-box thead th {
-	    padding: 5px 20px 8px 11px;
+	padding: 5px 20px 8px 11px;
 }
 
 #wc-product-customer-list-meta-box a.dt-button {
-	display: inline-block;
-    text-decoration: none;
-    font-size: 13px;
-    line-height: 26px;
-    height: 28px;
-    margin: 0;
-    padding: 0 10px 1px;
-    cursor: pointer;
-    border-width: 1px;
-    border-style: solid;
-    -webkit-appearance: none;
-    border-radius: 3px;
-    white-space: nowrap;
-    box-sizing: border-box;
-	color: #555;
-    border-color: #ccc;
-    background: #f7f7f7;
-    box-shadow: 0 1px 0 #ccc;
-    vertical-align: top;
-    margin-right: 7px;
+	display:            inline-block;
+	text-decoration:    none;
+	font-size:          13px;
+	line-height:        26px;
+	height:             28px;
+	margin:             0;
+	padding:            0 10px 1px;
+	cursor:             pointer;
+	border-width:       1px;
+	border-style:       solid;
+	-webkit-appearance: none;
+	border-radius:      3px;
+	white-space:        nowrap;
+	box-sizing:         border-box;
+	color:              #555;
+	border-color:       #ccc;
+	background:         #f7f7f7;
+	box-shadow:         0 1px 0 #ccc;
+	vertical-align:     top;
+	margin-right:       7px;
 }
 
 .wpcl p {
@@ -104,17 +104,18 @@ thead th strong {
 #wc-product-customer-list-meta-box .progress-bar {
 	padding: 20px 0;
 }
+
 #wc-product-customer-list-meta-box .progress-bar .result {
-	display: block;
+	display:    block;
 	text-align: center;
 }
 
 #wc-product-customer-list-meta-box .progress-bar .bar {
-	background: #eef1f3;
+	background:    #eef1f3;
 
 	display:       block;
 
-	margin: 5px auto;
+	margin:        5px auto;
 
 	position:      relative;
 	height:        10px;
@@ -127,12 +128,12 @@ thead th strong {
 #wc-product-customer-list-meta-box .progress-bar .progress {
 	background: #75b800;
 
-	display:  block;
-	position: absolute;
-	top:      0;
-	left:     0;
-	width:    0;
-	height:   100%;
+	display:    block;
+	position:   absolute;
+	top:        0;
+	left:       0;
+	width:      0;
+	height:     100%;
 	transition: all ease-in 0.3s;
 }
 
@@ -184,6 +185,16 @@ thead th strong {
 }
 
 .wpcl .error {
-	color: #f66;
+	color:       #f66;
 	font-weight: bold;
+}
+
+.wpcl .wpcl-btn-mail-to-all-group {
+	display: inline-block;
+}
+
+.wpcl .wpcl-email-all-technical-note {
+	display:    none;
+	font-size:  0.8em;
+	margin-top: 0.2em;
 }
