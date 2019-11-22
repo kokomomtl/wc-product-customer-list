@@ -32,15 +32,17 @@ if ( ! function_exists( 'wpcl_json_prep_cell' ) ) {
 
 			case 'wpcl_variations':
 				/* @var WC_Data $data */
-				if ( ! empty( $data ) && ! empty( $data->get_meta_data() ) ) {
-					$return = '<span style="max-height: 50px; overflow-y: auto; display: block;">';
-					foreach ( $data->get_meta_data() as $itemvariation ) {
-						if ( ! is_array( ( $itemvariation->value ) ) ) {
-							$return .= '<strong>' . wc_attribute_label( $itemvariation->key ) . '</strong>: &nbsp;' . wc_attribute_label( $itemvariation->value ) . '<br />';
-						}
-					}
-					$return .= '</span>';
+				if ( empty( $data ) || method_exists( $data, 'get_meta_data' ) == false ) {
+					break;
 				}
+
+				$return = '<span style="max-height: 50px; overflow-y: auto; display: block;">';
+				foreach ( $data->get_meta_data() as $itemvariation ) {
+					if ( ! is_array( ( $itemvariation->value ) ) ) {
+						$return .= '<strong>' . wc_attribute_label( $itemvariation->key ) . '</strong>: &nbsp;' . wc_attribute_label( $itemvariation->value ) . '<br />';
+					}
+				}
+				$return .= '</span>';
 				break;
 
 			default:

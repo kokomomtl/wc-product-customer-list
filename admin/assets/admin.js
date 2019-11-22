@@ -236,7 +236,7 @@
 
 
 							var emailGroups = [],
-								mailto      = 'mailto:',
+								mailto      = 'mailto:?bcc=',
 								limitChars  = 1900;
 
 							for ( var i = 0; i < _this.emails.length; i++ ) {
@@ -247,7 +247,7 @@
 									// adding this one would make it too long,
 									// store it in our groups and reset the mailto
 									emailGroups.push( mailto );
-									mailto = 'mailto:' + email + ';'
+									mailto = 'mailto:?bcc=' + email + ';'
 								} else {
 									// still some place? Let's add it to the end
 									mailto = testMailto;
