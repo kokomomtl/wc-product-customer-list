@@ -2,8 +2,8 @@
 Contributors: kokomoweb
 Tags: woocommerce, customer list, who bought, admin order list, product-specific, export customers to csv, email customers, customer list, customer, list, print, front-end, tickets, shows, courses, customers, shortcode
 Requires at least: 4.0
-Tested up to: 5.3
-Stable tag: 2.9.2
+Tested up to: 5.6
+Stable tag: 2.9.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,9 @@ Many hooks and filters. Documentation coming soon.
 2. The settings page.
 
 == Changelog ==
+
+= 2.9.3 =
+* Updated freemius SDK
 
 = 2.9.2 =
 * Fix BCC for emails
