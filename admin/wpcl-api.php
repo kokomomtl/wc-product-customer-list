@@ -224,6 +224,9 @@ class Wpcl_Api
                 $columns[$option_name] = $option_values['column_pretty_name'];
             }
         }
+
+        $columns = apply_filters('wpcl_admin_columns', $columns, $orders);
+
         foreach ( $orders as $order_info ) {
             $order_id = $order_info['order_id'];
             $item_id = $order_info['order_item_id'];
@@ -418,6 +421,9 @@ class Wpcl_Api
             if ( $order->get_billing_email() ) {
                 $data['email_list'][] = $order->get_billing_email();
             }
+
+            $current_row = apply_filters('wpcl_admin_current_row', $current_row, $order, $item_id);
+
             $data['data'][] = $current_row;
         }
         if ( !empty($data['email_list']) ) {
